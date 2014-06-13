@@ -1,0 +1,23 @@
+NOIP
+- /tc/init.d/noipOnStart
+
+RSD KEYS
+
+
+PORT FORWARDING
+SSH 1987
+
+
+
+SOCKETS
+client
+server
+
+
+MJPG STREAMER
+1900
+
+
+DB CONNECTOR
+. . . . . 
+. . . . .
