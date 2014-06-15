@@ -37,7 +37,7 @@ Es gibt insgesamt fünf verschiedene View's in der App.
 	\item Foto (siehe \ref{subsec.foto})
 \end{itemize}
 
-In JavaFX ist ein Fenster ein Stage-Objekt. Dieses Stage-Objekt sind fünf verschiedenen View's implementiert. Diesen View-Objekte können mehrere anderer Objekte hinzugefügt werden. Bei diesen anderen Objekten kann es sich um Buttons, eine Tabelle, ein Textfeld usw. handeln.
+In JavaFX ist ein Fenster ein Stage-Objekt. In diesem Stage-Objekt sind fünf verschiedenen View's implementiert. Diesen View-Objekte können mehrere anderer Objekte hinzugefügt werden. Bei diesen anderen Objekten kann es sich um Buttons, eine Tabelle, ein Textfeld usw. handeln.
 
 \begin{figure}[h]
   \begin{center}
@@ -49,7 +49,7 @@ In JavaFX ist ein Fenster ein Stage-Objekt. Dieses Stage-Objekt sind fünf versc
 
 \subsection{Login}
 \label{subsec.login}
-Bei dem Login View muss sich der Nutzer mit seinem Usernamen und Passwort, was in der Datenbank hinterlegt ist, anmelden. Ist einer der Felder nicht ausgefüllt oder das Passwort bzw. der User nicht korrekt, wird das mit einem \texttt{Label} als Message dargestellt. %Über eine \texttt{CheckBox} kann der Benutzer sich sein Passwort in Klartext anzeigen oder verbergen lassen. Dies wurde so realisiert das ein \texttt{TextField} Objekt und ein \texttt{PasswordField} Objekt direkt übereinander gelegt wurden. Der Initialisierungszustand ist der, das das \texttt{PasswordField} sichtbar und das \texttt{TextField} unsichtbar ist. Mit der \texttt{CheckBox} wird das Ganze dann getoggelt.
+Bei der Login View muss sich der Nutzer mit seinem Usernamen und Passwort, was in der Datenbank hinterlegt ist, anmelden. Ist einer der Felder nicht ausgefüllt oder das Passwort bzw. der User nicht korrekt, wird das mit einem \texttt{Label} als Message dargestellt. %Über eine \texttt{CheckBox} kann der Benutzer sich sein Passwort in Klartext anzeigen oder verbergen lassen. Dies wurde so realisiert das ein \texttt{TextField} Objekt und ein \texttt{PasswordField} Objekt direkt übereinander gelegt wurden. Der Initialisierungszustand ist der, das das \texttt{PasswordField} sichtbar und das \texttt{TextField} unsichtbar ist. Mit der \texttt{CheckBox} wird das Ganze dann getoggelt.
 %\begin{lstlisting}[caption={Java Passwort-, Textfeld Un-, Sichtbar}%\label{lst:reg.java.pw.txt},captionpos=b]
 %		pwTextField.managedProperty().bind(checkBox.selectedProperty());
 %		pwTextField.visibleProperty().bind(checkBox.selectedProperty());
@@ -65,14 +65,14 @@ Bei dem Login View muss sich der Nutzer mit seinem Usernamen und Passwort, was i
 \begin{figure}[h]
   \begin{center}
     \includegraphics[scale=0.6]{loginStage.png}
-  		  \caption{Login Fenster}
+  		  \caption{Login View}
      \label{fig.loginFenster}
   \end{center}
 \end{figure}
 
 \subsection{Registrierung}
 \label{subsec.registrierung}
-Falls der Benutzer noch kein Konto in der Datenbanktabelle \texttt{tb\_users} hat, hat er die Möglichkeit, sich über das Registrierung-View anzumelden. Softwareseitig wurde eine Überprüfung eingebaut, dass jedes Textfeld etwas beinhalten muss. Bei den Passwortfeldern wird überprüft, ob die beiden Passwörter, die eingegeben wurden, identisch sind. Wenn alle Überprüfungen korrekt sind, wird aus den Eingaben und einem SQL Befehl \texttt{NOW()} ein SQL-String gebaut und an die Datenbank geschickt. Falls die Überprüfung fehlgeschlagen ist, wird wie im  Login Fenster (s. \ref{subsec.login}) eine \texttt{Label} Message ausgegeben.
+Falls der Benutzer noch kein Konto in der Datenbanktabelle \texttt{tb\_users} hat, hat er die Möglichkeit, sich über die Registrierung View anzumelden. Softwareseitig wurde eine Überprüfung eingebaut, dass jedes Textfeld etwas beinhalten muss. Bei den Passwortfeldern wird überprüft, ob die beiden Passwörter, die eingegeben wurden, identisch sind. Wenn alle Überprüfungen korrekt sind, wird aus den Eingaben und einem SQL Befehl \texttt{NOW()} ein SQL-String gebaut und an die Datenbank geschickt. Falls die Überprüfung fehlgeschlagen ist, wird wie bei der Login View (s. \ref{subsec.login}) eine \texttt{Label} Message ausgegeben.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %referenz auf die DB wie sie aufgebaut ist ???
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -95,7 +95,7 @@ Die Sichtbarkeit der Anmeldedaten ist nur direkt innerhalb der Applikation mögl
 \begin{figure}[h]
   \begin{center}
     \includegraphics[scale=0.6]{regStage.png}
-  		  \caption{Registrierung Fenster}
+  		  \caption{Registrierung View}
      \label{fig.RegistrierungFenster}
   \end{center}
 \end{figure}
@@ -103,7 +103,7 @@ Die Sichtbarkeit der Anmeldedaten ist nur direkt innerhalb der Applikation mögl
 \subsection{Control}
 \label{subsec.control}
 
-Im Fenster \texttt{Control} ist es möglich, das Live-Video von der Cam zu betrachten. Es wird mit Hilfe der Klasse WebEngine und WebView realisiert. D.h. es wird durch WebEngine die Webseite geladen und durch WebView wird die geladene Webseite im Fenster angezeigt. Diese Webseite wird vom MJPEG Streamer zur Verfügung gestellt. Der Stream wird erst gestartet, wenn der Button \texttt{Stream starten} getätigt ist.
+In der View \texttt{Control} ist es möglich, das Live-Video von der Cam zu betrachten. Es wird mit Hilfe der Klasse WebEngine und WebView realisiert. D.h. es wird durch WebEngine die Webseite geladen und durch WebView wird die geladene Webseite in View angezeigt. Diese Webseite wird vom MJPEG Streamer zur Verfügung gestellt. Der Stream wird erst gestartet, wenn der Button \texttt{Stream starten} getätigt ist.
 
 \begin{lstlisting}[caption={Stream Einbindung}\label{lst:reg.java.stream},captionpos=b]
 WebView webview = new WebView();
@@ -114,26 +114,26 @@ File file = new File("http://<IP-Adresse vom PI>/javascript\_simple.html");
 webengine.load(file.toString());
 \end{lstlisting}
 
-Beim Betätigen des Buttons \texttt{Benutzertabelle} wird ein neues View \texttt{Datenbank} geöffnet (siehe Kapital \ref{subsec.datenbank}) und das View \texttt{Control} wird geschlossen. 
+Beim Betätigen des Buttons \texttt{Benutzertabelle} wird eine neue View \texttt{Datenbank} geöffnet (siehe Kapital \ref{subsec.datenbank}) und die View \texttt{Control} wird geschlossen. 
 Nach dem Betätigen des Buttons \texttt{Tür öffnen} werden zwei Funktionen aufgerufen. Bei der ersten Funktion wird über die Socket-Schnittstelle ein Befehl an das Pi gesendet, das dieses die Tür öffnen kann. Bei der zweiten Funktion wird ein neuer Eintrag in die Tabelle \texttt{tb\_doorloogers} in Datenbank eingetragen. Dieser Eintrag beinhaltet den Zeitpunkt des Öffnens der Tür.
 
 
 \begin{figure}[h]
   \begin{center}
     \includegraphics[scale=0.5]{streamStage.png}
-  		  \caption{Control Fenster}
+  		  \caption{Control View}
      \label{fig.StreamFenster}
   \end{center}
 \end{figure}
 
 \subsection{Datenbank}
 \label{subsec.datenbank}
-Dieses View hat als Hauptobjekt eine Tabelle. Der Tabelleninhalt wird dynamisch erstellt. In einer zusätzliche Klasse wird geschaut, wie viele Spalten die Datenbank hat und fügt diese dann dem Tabellen-Objekt hinzu. Nach dem Hinzufügen der Spalten wird Zeile für Zeile aus der Datenbank geholt und in die Tabelle geladen. Zu jedem Eintrag in die Datenbanktabelle \texttt{tb\_doorlogger} gehört ein Bild. Um sich zu einen entsprechenden Tabelleneintrag das Bild anzusehen, muss man über eine Combobox die ID der Zeile auswählen und auf den Button \texttt{Open Picture} klicken. Mehr dazu im Kapitel \ref{subsec.foto}. Die Combobox zeigt nur so viele Zahlen wie es Zeilen in der Tabelle gibt. Wenn nichts in der Datenbank steht und dadurch auch kein Eintrag in die Tabelle gemacht wird, werden die Combobox und der \texttt{Open Picture} Button deaktiviert. Gibt es Einträge in der Datenbank, so ist die Standarteinstellung der Combobox auf 1.
+Diese View hat als Hauptobjekt eine Tabelle. Der Tabelleninhalt wird dynamisch erstellt. In einer zusätzliche Klasse wird geschaut, wie viele Spalten die Datenbank hat und fügt diese dann dem Tabellen-Objekt hinzu. Nach dem Hinzufügen der Spalten wird Zeile für Zeile aus der Datenbank geholt und in die Tabelle geladen. Zu jedem Eintrag in die Datenbanktabelle \texttt{tb\_doorlogger} gehört ein Bild. Um sich zu einen entsprechenden Tabelleneintrag das Bild anzusehen, muss man über eine Combobox die ID der Zeile auswählen und auf den Button \texttt{Bild laden} klicken. Im Moment ist die Implementierung der Bilder-Verwaltung noch nicht fertig. %Mehr dazu im Kapitel \ref{subsec.foto}. %Die Combobox zeigt nur so viele Zahlen wie es Zeilen in der Tabelle gibt. Wenn nichts in der Datenbank steht und dadurch auch kein Eintrag in die Tabelle gemacht wird, werden die Combobox und der \texttt{Open Picture} Button deaktiviert. Gibt es Einträge in der Datenbank, so ist die Standarteinstellung der Combobox auf 1.
 
 \begin{figure}[h]
   \begin{center}
     \includegraphics[scale=0.6]{dbStage.png}
-  		  \caption{Datenbank Fenster}
+  		  \caption{Datenbank View}
      \label{fig.DatenbankFenster}
   \end{center}
 \end{figure}
@@ -146,7 +146,7 @@ Nachdem der \texttt{Open Picture} Button in der Datenbank Ansicht gedrückt wurd
 String SQL = "SELECT * FROM tb_images WHERE ID = " + userID;
 \end{lstlisting}
 
-Aus dem String ist relativ leicht zu erkennen, dass das Bild aus der Datenbanktabelle \texttt{tb\_images} kommt. Das Bild ist aber in der Datenbank nur binär als BLOB Typ abgelegt. Dieser Typ existiert auch in Java. Nach dem Auslesen des Binärstreams wandeln wir das Gelesene in ein Byte-Array. Aus dem Byte-Array erzeugen wir dann ein Buffered-Image. In Swing könnten wir uns jetzt schon ein Bild anzeigen lassen. Aber das Programm wurde ja nicht mit Swing, sondern mit JavaFX geschrieben. Dank eines \texttt{.toFXImage(BufferedImage arg0, WritableImage arg1)} Befehles lässt sich unser Swing-Objekt einfach in ein JavaFX-Objekt umwandeln. Dieses zeigen wir dann in einem zusätzlichen Stage Fenster an. Ein klarer Vorteil bei dieser Methode ist, dass es nicht wichtig ist, was für ein Typ dem Bild mal angehörte.\newpage
+Aus dem String ist relativ leicht zu erkennen, dass das Bild aus der Datenbanktabelle \texttt{tb\_images} kommt. Das Bild ist aber in der Datenbank nur binär als BLOB Typ abgelegt. Dieser Typ existiert auch in Java. Nach dem Auslesen des Binärstreams wandeln wir das Gelesene in ein Byte-Array. Aus dem Byte-Array erzeugen wir dann ein Buffered-Image. In Swing könnten wir uns jetzt schon ein Bild anzeigen lassen. Aber das Programm wurde ja nicht mit Swing, sondern mit JavaFX geschrieben. Dank eines \texttt{.toFXImage(BufferedImage arg0, WritableImage arg1)} Befehles lässt sich unser Swing-Objekt einfach in ein JavaFX-Objekt umwandeln. Dieses zeigen wir dann in einem zusätzlichen Stage Fenster an. %Ein klarer Vorteil bei dieser Methode ist, dass es nicht wichtig ist, was für ein Typ dem Bild mal angehörte.\newpage
 \begin{lstlisting}[caption={JavaFX Foto öffnen}\label{lst:pic.javafx.open},captionpos=b]
 //Foto aus DB holen
 byte[] imgData = imgShow.getImageDB(userID);
