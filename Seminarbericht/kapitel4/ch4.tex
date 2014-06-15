@@ -128,7 +128,7 @@ Nach dem Betätigen des Buttons \texttt{Tür öffnen} werden zwei Funktionen auf
 
 \subsection{Datenbank}
 \label{subsec.datenbank}
-Diese View hat als Hauptobjekt eine Tabelle. Der Tabelleninhalt wird dynamisch erstellt. In einer zusätzliche Klasse wird geschaut, wie viele Spalten die Datenbank hat und fügt diese dann dem Tabellen-Objekt hinzu. Nach dem Hinzufügen der Spalten wird Zeile für Zeile aus der Datenbank geholt und in die Tabelle geladen. Zu jedem Eintrag in die Datenbanktabelle \texttt{tb\_doorlogger} gehört ein Bild. Um sich zu einen entsprechenden Tabelleneintrag das Bild anzusehen, muss man über eine Combobox die ID der Zeile auswählen und auf den Button \texttt{Bild laden} klicken. Im Moment ist die Implementierung der Bilder-Verwaltung noch nicht fertig. %Mehr dazu im Kapitel \ref{subsec.foto}. %Die Combobox zeigt nur so viele Zahlen wie es Zeilen in der Tabelle gibt. Wenn nichts in der Datenbank steht und dadurch auch kein Eintrag in die Tabelle gemacht wird, werden die Combobox und der \texttt{Open Picture} Button deaktiviert. Gibt es Einträge in der Datenbank, so ist die Standarteinstellung der Combobox auf 1.
+Diese View hat als Hauptobjekt eine Tabelle (TableView). Der Tabelleninhalt wird dynamisch erstellt. In einer zusätzliche Klasse wird überprüft, wie viele Spalten die Datenbank hat und fügt diese dann dem Tabellen-Objekt hinzu. Nach dem Hinzufügen der Spalten wird Zeile für Zeile aus der Datenbank geholt und in die Tabelle geladen. Zu jedem Eintrag in die Datenbanktabelle \texttt{tb\_doorlogger} gehört ein Bild. Um sich zu einen entsprechenden Tabelleneintrag das Bild anzusehen, muss man über eine Combobox die ID der Zeile auswählen und auf den Button \texttt{Bild laden} klicken. Im Moment ist die Implementierung der TableView noch nicht fertig, daher funktioniert die TableView mit Darstellung der Bilder nicht richtig. %Mehr dazu im Kapitel \ref{subsec.foto}. %Die Combobox zeigt nur so viele Zahlen wie es Zeilen in der Tabelle gibt. Wenn nichts in der Datenbank steht und dadurch auch kein Eintrag in die Tabelle gemacht wird, werden die Combobox und der \texttt{Open Picture} Button deaktiviert. Gibt es Einträge in der Datenbank, so ist die Standarteinstellung der Combobox auf 1.
 
 \begin{figure}[h]
   \begin{center}
@@ -140,13 +140,13 @@ Diese View hat als Hauptobjekt eine Tabelle. Der Tabelleninhalt wird dynamisch e
 
 \subsection{Foto}
 \label{subsec.foto}
-Nachdem der \texttt{Open Picture} Button in der Datenbank Ansicht gedrückt wurde, wird mit Hilfe der angegebenen ID aus der Combobox der SQL-String gebaut.
+Nachdem der \texttt{Bild laden} Button in der Datenbank Ansicht gedrückt wurde, wird mit Hilfe der angegebenen ID aus der Combobox der SQL-String gebaut.
 
 \begin{lstlisting}[caption={Java-SQL String Foto öffnen}\label{lst:pic.db.foto.open},captionpos=b]
 String SQL = "SELECT * FROM tb_images WHERE ID = " + userID;
 \end{lstlisting}
 
-Aus dem String ist relativ leicht zu erkennen, dass das Bild aus der Datenbanktabelle \texttt{tb\_images} kommt. Das Bild ist aber in der Datenbank nur binär als BLOB Typ abgelegt. Dieser Typ existiert auch in Java. Nach dem Auslesen des Binärstreams wandeln wir das Gelesene in ein Byte-Array. Aus dem Byte-Array erzeugen wir dann ein Buffered-Image. In Swing könnten wir uns jetzt schon ein Bild anzeigen lassen. Aber das Programm wurde ja nicht mit Swing, sondern mit JavaFX geschrieben. Dank eines \texttt{.toFXImage(BufferedImage arg0, WritableImage arg1)} Befehles lässt sich unser Swing-Objekt einfach in ein JavaFX-Objekt umwandeln. Dieses zeigen wir dann in einem zusätzlichen Stage Fenster an. %Ein klarer Vorteil bei dieser Methode ist, dass es nicht wichtig ist, was für ein Typ dem Bild mal angehörte.\newpage
+Aus dem String ist relativ leicht zu erkennen, dass das Bild aus der Datenbanktabelle \texttt{tb\_images} kommt. Das Bild ist aber in der Datenbank nur binär als BLOB Typ abgelegt. Dieser Typ existiert auch in Java. Nach dem Auslesen des Binärstreams wandeln wir das Gelesene in ein Byte-Array. Aus dem Byte-Array erzeugen wir dann ein Buffered-Image. In Swing könnten wir uns jetzt schon ein Bild anzeigen lassen. Aber die App wurde ja nicht mit Swing, sondern mit JavaFX geschrieben. Dank eines \texttt{.toFXImage(BufferedImage arg0, WritableImage arg1)} Befehles lässt sich unser Swing-Objekt einfach in ein JavaFX-Objekt umwandeln. Da im Moment die Benutzertabelle View noch nicht fertig implementiert ist, zeigen wir dieses Objekt vorrübergehend in einem zusätzlichen Stage Fenster an. In der Zukunft sollen die Bilder nicht in einem zusätzlichen Fenster dargestellt werden, sondern in einer zusätzlichen View-Objekt in Benutzertabelle View. %Ein klarer Vorteil bei dieser Methode ist, dass es nicht wichtig ist, was für ein Typ dem Bild mal angehörte.\newpage
 \begin{lstlisting}[caption={JavaFX Foto öffnen}\label{lst:pic.javafx.open},captionpos=b]
 //Foto aus DB holen
 byte[] imgData = imgShow.getImageDB(userID);
