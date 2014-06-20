@@ -44,11 +44,11 @@ void openDoor()
     //get three last digits for user id
     u_ID = doorValues % 100;
     
-    cout << "idata : " << iData << "\n" << flush;
+    cout << "doorValues : " << doorValues << "\n" << flush;
     //convert user is to zeros
-    iData = iData - u_ID;
-    iData = iData / 1000
-    dl_ID = iData % 10000;
+    int temp = doorValues - u_ID;
+    temp = temp / 1000;
+    dl_ID = temp % 10000;
     
     cout << "u_id  : " << u_ID << "\n" << flush;
     cout << "dl_id : " << dl_ID << "\n" << flush;
@@ -56,9 +56,9 @@ void openDoor()
     
     string sCommand = OPEN_DOOR_CMD;
     sCommand.append(" ");
-    sCommand.append(dl_ID);
+    sCommand.append(to_string(dl_ID));
     sCommand.append(" ");
-    sCommand.append(u_ID);
+    sCommand.append(to_string(u_ID));
     
     
     //system(sCommand);
@@ -127,7 +127,7 @@ void openLog(string sName)
         clog << "++++++++++++++++++++++++++++++++++++++++++++\n" << flush;
         clog << "++++++++++++++++++++++++++++++++++++++++++++\n" << flush;
         clog << " " << sName << "\n"                             << flush;
-        clog << " Logger for current socket server sesion\n"     << flush;
+        clog << " Logger for current socket server session\n"    << flush;
         clog << " using port " << PORT << "\n"                   << flush;
         clog << "++++++++++++++++++++++++++++++++++++++++++++\n" << flush;
         clog << "++++++++++++++++++++++++++++++++++++++++++++\n" << flush;
@@ -146,7 +146,7 @@ void sendData( int sockfd, int x ) {
     char buffer[10];
     sprintf( buffer, "%d\n", x );
     if ( (n = write( sockfd, buffer, strlen(buffer) ) ) < 0 )
-        clog << "ERROR writing to socket\n" << flush;
+        clog << "ERROR writing to socket \n" << flush;
     buffer[n] = '\0';
 }
 
@@ -159,7 +159,7 @@ int getData( int sockfd ) {
     int n;
     
     if ( (n = read(sockfd,buffer,9) ) < 0 )
-        clog << "ERROR reading from socket\n" << flush;
+        clog << "ERROR reading from socket \n" << flush;
     buffer[n] = '\0';
     return atoi(buffer);
 }
@@ -226,9 +226,16 @@ int main(int argc, char *argv[]) {
             iData = getData( newsockfd );
             //clog << "\n\ngetData: " << iData << "\n" << flush;
             
-            if (iData != QUIT)
+            if (iData != 0)
             {
-                switch (iData)
+                int info = 0;
+                
+                if (iData > DOORMIN)
+                    info = 2;
+                else
+                    info = iData;
+                    
+                switch (info)
                 {
                     
                     //open stream
@@ -239,10 +246,8 @@ int main(int argc, char *argv[]) {
                         break;
                     
                     //open door
-                    // VEREINBARUNG TREFFEN!!!!
-                    // 2 000X 000X
                     //case DOOR:
-                    case iData > DOORMIN
+                    case 2:
                         clog << "got DOOR\n" << flush;
                         doorValues = iData;
                         startThread();
@@ -251,8 +256,8 @@ int main(int argc, char *argv[]) {
                         
                     //error
                     default:
-//                        clog << "ERROR client sent unknown request: "
-//                             << iData << "\n" << flush;
+                       cout << "ERROR client sent unknown request: "
+                            << iData << "\n" << flush;
                         sendData(newsockfd, ERROR);
                         break;
                 }
@@ -260,20 +265,20 @@ int main(int argc, char *argv[]) {
             }
             else
             {
-                clog << "Server received QUIT.....\n" << flush;
+                clog << "Server received zero.....\n" << flush;
                 break;
             }
         }//second while
         
         
-        if(iData == QUIT)
-        {
-            sendData(newsockfd, QUIT);
-            clog << "wrote " << QUIT << "\n" << flush;
-            close( newsockfd );
-            clog << "socket closed\n" << flush;
-            break;
-        }
+//        if(iData == QUIT)
+//        {
+//            sendData(newsockfd, QUIT);
+//            clog << "wrote " << QUIT << "\n" << flush;
+//            close( newsockfd );
+//            clog << "socket closed\n" << flush;
+//            break;
+//        }
         
     }//first while
     
