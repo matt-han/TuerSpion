@@ -1,15 +1,29 @@
 package gui;
 
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import database.DBConnector;
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,16 +41,18 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.util.Callback;
 
 public class CenterFXEnd {
 	
 	final Button buttonSave = new Button("Speichern");
 	final Button buttonCancel = new Button("Abbrechen");
 	final Button buttonStream = new Button("Stream starten");
-	final Button buttonUserTable = new Button("Benutzertabelle");
+	final Button buttonDoorLogger = new Button("Benutzertabelle");
 	final Button buttonOpenDoor = new Button("Tür öffnen");
 	
-	final static String IP_STREAM = "http://10.0.0.50:1900/javascript_simple.html";
+	//final static String IP_STREAM = "http://10.0.0.50:1900/javascript_simple.html";
+	final static String IP_STREAM = "https://mperkowski.com";
 	//final static String IP_STREAM = "http://spyhole.no-ip.biz:1900/javascript_simple.html";
 	
 	
@@ -162,7 +178,7 @@ public GridPane addStreamGridPane() {
 		grid.setVgap(10);
 		grid.setPadding(new Insets(0, 10, 0, 10));
 		   
-		Text TextRegis = new Text("Benutzertabelle:");
+		Text TextRegis = new Text("Stream:");
 		TextRegis.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 		grid.add(TextRegis, 1, 0); 
 		
@@ -179,6 +195,86 @@ public GridPane addStreamGridPane() {
 		return grid;
 }
 
+
+
+
+
+public GridPane addDoorLoggerTableGridPane() {
+	
+	GridPane grid = new GridPane();
+	grid.setHgap(10);
+	grid.setVgap(10);
+	grid.setPadding(new Insets(0, 10, 0, 10));
+	   
+	Text TextRegis = new Text("Türöffner Tabelle:");
+	TextRegis.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+	grid.add(TextRegis, 1, 0); 
+	/*
+	WebView WView = new WebView();
+	WebEngine WEngine = WView.getEngine();
+	WEngine.setJavaScriptEnabled(true);
+	WEngine.load(IP_STREAM);
+	WView.setMaxSize(400, 250);
+	WView.setVisible(true);
+	*/
+
+	TableView<Object> tableview = new TableView<>();
+    ObservableList<Object> data = FXCollections.observableArrayList();
+    try{
+      Connection conn = DBConnector.connect();
+      //SQL FOR SELECTING ALL OF CUSTOMER
+      String SQL = "SELECT * from tb_doorlogger";
+      //ResultSet
+      ResultSet rs = conn.createStatement().executeQuery(SQL);
+
+      /**********************************
+       * TABLE COLUMN ADDED DYNAMICALLY *
+       **********************************/
+      for(int i=0 ; i<rs.getMetaData().getColumnCount(); i++){
+          //We are using non property style for making dynamic table
+          final int j = i;                
+          TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i+1));
+          col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList,String>,ObservableValue<String>>(){                    
+              public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {                                                                                              
+                  return new SimpleStringProperty(param.getValue().get(j).toString());                        
+              }                    
+          });
+         
+          tableview.getColumns().addAll(col); 
+          System.out.println("Column ["+i+"] ");
+      }
+
+      /********************************
+       * Data added to ObservableList *
+       ********************************/
+      while(rs.next()){
+          //Iterate Row
+          ObservableList<String> row = FXCollections.observableArrayList();
+          for(int i=1 ; i<=rs.getMetaData().getColumnCount(); i++){
+              //Iterate Column
+              row.add(rs.getString(i));
+          }
+          System.out.println("Row [1] added "+row );
+          data.add(row);
+
+      }
+
+      //FINALLY ADDED TO TableView
+      tableview.setItems(data);
+    }catch(Exception e){
+        e.printStackTrace();
+        System.out.println("Error on Building Data");             
+    }
+	
+	grid.add(tableview, 1, 1);
+	   
+	//grid.setGridLinesVisible(true);
+	
+	return grid;
+	
+            
+}
+
 public AnchorPane addStreamAnchorPane(GridPane grid) {
 
 	AnchorPane anchorpane = new AnchorPane();
@@ -186,7 +282,7 @@ public AnchorPane addStreamAnchorPane(GridPane grid) {
 	HBox hb = new HBox();
 	hb.setPadding(new Insets(0, 10, 10, 10));
 	hb.setSpacing(10);
-	//hb.getChildren().addAll(buttonStream, buttonOpenDoor, buttonUserTable);
+	hb.getChildren().addAll(buttonStream, buttonOpenDoor, buttonDoorLogger);
 
 	anchorpane.getChildren().addAll(grid,hb);
   // Anchor buttons to bottom right, anchor grid to top

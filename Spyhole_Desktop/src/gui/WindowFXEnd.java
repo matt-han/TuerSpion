@@ -32,6 +32,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import gui.TopFXEnd;
+import socket.SocketClientController;
 
 /**
  * Sample application that shows examples of the different layout panes
@@ -94,7 +95,7 @@ public class WindowFXEnd extends Application {
 	        	 LoginController LoginC = new LoginController(TFUser.getText(),PFPass.getText());
 	        	 Bottom.lblStatusString.setText("Anmelden...");
 	        	 Bottom.StringStatus = "Anmelden";
-	        	 LoginC.checkLogin();
+	        	 LoginC.checkLoginDB();
 	        	// System.out.print(LoginC.getValidateLogin());
 	        	 if(LoginC.getValidateLogin()){
 	        		 border.setCenter(Center.addStreamAnchorPane(Center.addStreamGridPane()));
@@ -131,6 +132,8 @@ public class WindowFXEnd extends Application {
 	        @Override  
 	        public void handle(ActionEvent e) {  
 	        	border.setCenter(Center.addRegisAnchorPane(Center.addRegisGridPane()));
+	        	SocketClientController socketC = new SocketClientController();
+	        	socketC.SocketServer();
 	        }  
 	   });  
         
@@ -139,6 +142,13 @@ public class WindowFXEnd extends Application {
 	        @Override  
 	        public void handle(ActionEvent e) {  
 	        	 border.setCenter(Center.addLoginGridPane());
+	        }  
+	   });  
+        
+        Center.buttonDoorLogger.setOnAction(new EventHandler<ActionEvent>() {  
+	        @Override  
+	        public void handle(ActionEvent e) {  
+	        	 border.setCenter(Center.addDoorLoggerTableGridPane());
 	        }  
 	   });  
         

@@ -4,7 +4,7 @@ import java.sql.Connection;
  import java.sql.SQLException;  
  public class DBConnector {  
    private static Connection conn;  
-   private static String url = "jdbc:mysql://192.168.1.100:3306/db_spyhole";  
+   private static String url = "jdbc:mysql://10.0.0.50:3306/db_spyhole";  
    private static String user = "pi";//Username of database  
    private static String pass = "spyhole";//Password of database  
    public static Connection connect() throws SQLException{  
