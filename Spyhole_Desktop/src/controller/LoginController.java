@@ -3,7 +3,6 @@ package controller;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import database.DBConnector;
 
@@ -60,5 +59,7 @@ public class LoginController {
 	
 	public void setLogoff(){
 		this.validateLogin = false;
+		this.UserName = null;
+		this.UserPass = null;
 	}
 }

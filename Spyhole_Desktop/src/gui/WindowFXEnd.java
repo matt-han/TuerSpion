@@ -6,18 +6,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -32,7 +24,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import gui.TopFXEnd;
-import socket.SocketClientController;
+//import socket.SocketController;
 
 /**
  * Sample application that shows examples of the different layout panes
@@ -100,7 +92,7 @@ public class WindowFXEnd extends Application {
 	        	 if(LoginC.getValidateLogin()){
 	        		 border.setCenter(Center.addStreamAnchorPane(Center.addStreamGridPane()));
 	        		 border.setTop(Top.addLogoff());
-	        		 System.out.print(LoginC.getValidateLogin());
+	        		// System.out.print(LoginC.getValidateLogin());
 	        		 Bottom.lblStatusString.setText("Anmeldung erfolgreich...");
 	        	 } else {
 	        		 Bottom.lblStatusString.setText("Anmeldung fehlgeschlagen...");
@@ -132,8 +124,17 @@ public class WindowFXEnd extends Application {
 	        @Override  
 	        public void handle(ActionEvent e) {  
 	        	border.setCenter(Center.addRegisAnchorPane(Center.addRegisGridPane()));
-	        	SocketClientController socketC = new SocketClientController();
-	        	socketC.SocketServer();
+	        	Bottom.lblStatusString.setText("Registrierung...");
+	        	//SocketController socketC = new SocketController();
+	        	//socketC.SocketClient("2","22","11");
+	        }  
+	   });  
+        
+        Center.buttonSave.setOnAction(new EventHandler<ActionEvent>() {  
+	        @Override  
+	        public void handle(ActionEvent e) {  
+	        	border.setCenter(Center.addRegisAnchorPane(Center.addRegisGridPane()));
+	        	Bottom.lblStatusString.setText("Registrierung...");
 	        }  
 	   });  
         
@@ -142,15 +143,27 @@ public class WindowFXEnd extends Application {
 	        @Override  
 	        public void handle(ActionEvent e) {  
 	        	 border.setCenter(Center.addLoginGridPane());
+	        	 Bottom.lblStatusString.setText("Anmeldung erforderlich...");
 	        }  
 	   });  
         
         Center.buttonDoorLogger.setOnAction(new EventHandler<ActionEvent>() {  
 	        @Override  
 	        public void handle(ActionEvent e) {  
-	        	 border.setCenter(Center.addDoorLoggerTableGridPane());
+	        	 border.setCenter(Center.addDoorLoggerAnchorPane(Center.addDoorLoggerTableGridPane()));
 	        }  
 	   });  
+        
+        Center.buttonBackToStream.setOnAction(new EventHandler<ActionEvent>() {  
+	        @Override  
+	        public void handle(ActionEvent e) {  
+	        	 border.setCenter(Center.addStreamAnchorPane(Center.addStreamGridPane()));
+	        }  
+	   });  
+        
+        
+       
+       
         
         
         border.setCenter(Center.addLoginGridPane());

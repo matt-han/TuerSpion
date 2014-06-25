@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import controller.DataDBController;
 import database.DBConnector;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
@@ -50,6 +51,7 @@ public class CenterFXEnd {
 	final Button buttonStream = new Button("Stream starten");
 	final Button buttonDoorLogger = new Button("Benutzertabelle");
 	final Button buttonOpenDoor = new Button("Tür öffnen");
+	final Button buttonBackToStream = new Button("Zurück zum Stream");
 	
 	//final static String IP_STREAM = "http://10.0.0.50:1900/javascript_simple.html";
 	final static String IP_STREAM = "https://mperkowski.com";
@@ -209,63 +211,12 @@ public GridPane addDoorLoggerTableGridPane() {
 	Text TextRegis = new Text("Türöffner Tabelle:");
 	TextRegis.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 	grid.add(TextRegis, 1, 0); 
-	/*
-	WebView WView = new WebView();
-	WebEngine WEngine = WView.getEngine();
-	WEngine.setJavaScriptEnabled(true);
-	WEngine.load(IP_STREAM);
-	WView.setMaxSize(400, 250);
-	WView.setVisible(true);
-	*/
-
-	TableView<Object> tableview = new TableView<>();
-    ObservableList<Object> data = FXCollections.observableArrayList();
-    try{
-      Connection conn = DBConnector.connect();
-      //SQL FOR SELECTING ALL OF CUSTOMER
-      String SQL = "SELECT * from tb_doorlogger";
-      //ResultSet
-      ResultSet rs = conn.createStatement().executeQuery(SQL);
-
-      /**********************************
-       * TABLE COLUMN ADDED DYNAMICALLY *
-       **********************************/
-      for(int i=0 ; i<rs.getMetaData().getColumnCount(); i++){
-          //We are using non property style for making dynamic table
-          final int j = i;                
-          TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i+1));
-          col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList,String>,ObservableValue<String>>(){                    
-              public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {                                                                                              
-                  return new SimpleStringProperty(param.getValue().get(j).toString());                        
-              }                    
-          });
-         
-          tableview.getColumns().addAll(col); 
-          System.out.println("Column ["+i+"] ");
-      }
-
-      /********************************
-       * Data added to ObservableList *
-       ********************************/
-      while(rs.next()){
-          //Iterate Row
-          ObservableList<String> row = FXCollections.observableArrayList();
-          for(int i=1 ; i<=rs.getMetaData().getColumnCount(); i++){
-              //Iterate Column
-              row.add(rs.getString(i));
-          }
-          System.out.println("Row [1] added "+row );
-          data.add(row);
-
-      }
-
-      //FINALLY ADDED TO TableView
-      tableview.setItems(data);
-    }catch(Exception e){
-        e.printStackTrace();
-        System.out.println("Error on Building Data");             
-    }
 	
+	TableView tableview = new TableView();
+	DataDBController.buildDataDL(tableview);
+	tableview.maxHeight(2);
+	tableview.maxWidth(2);
+	tableview.setMaxSize(950, 290);
 	grid.add(tableview, 1, 1);
 	   
 	//grid.setGridLinesVisible(true);
@@ -283,6 +234,24 @@ public AnchorPane addStreamAnchorPane(GridPane grid) {
 	hb.setPadding(new Insets(0, 10, 10, 10));
 	hb.setSpacing(10);
 	hb.getChildren().addAll(buttonStream, buttonOpenDoor, buttonDoorLogger);
+
+	anchorpane.getChildren().addAll(grid,hb);
+  // Anchor buttons to bottom right, anchor grid to top
+	AnchorPane.setBottomAnchor(hb, 8.0);
+	AnchorPane.setRightAnchor(hb, 5.0);
+	AnchorPane.setTopAnchor(grid, 10.0);
+
+	return anchorpane;
+}
+
+public AnchorPane addDoorLoggerAnchorPane(GridPane grid) {
+
+	AnchorPane anchorpane = new AnchorPane();
+
+	HBox hb = new HBox();
+	hb.setPadding(new Insets(0, 10, 10, 10));
+	hb.setSpacing(10);
+	hb.getChildren().addAll(buttonBackToStream);
 
 	anchorpane.getChildren().addAll(grid,hb);
   // Anchor buttons to bottom right, anchor grid to top
