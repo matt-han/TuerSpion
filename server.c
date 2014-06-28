@@ -1,10 +1,10 @@
-
+#include <functional>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
-#include <string>
+#include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
@@ -56,12 +56,12 @@ void openDoor()
     
     string sCommand = OPEN_DOOR_CMD;
     sCommand.append(" ");
-    sCommand.append(to_string(dl_ID));
+    sCommand.append(std::to_string(dl_ID));
     sCommand.append(" ");
-    sCommand.append(to_string(u_ID));
+    sCommand.append(std::to_string(u_ID));
     
     
-    //system(sCommand);
+    system(sCommand.c_str());
     
     u_ID  = 0;
     dl_ID = 0;
@@ -202,8 +202,11 @@ int main(int argc, char *argv[]) {
     serv_addr.sin_addr.s_addr = INADDR_ANY;
     serv_addr.sin_port = htons( PORT );
     
-    if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
-        clog << "ERROR on binding\n" << flush;
+//    if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
+   // auto bindResult = 
+bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr) );
+    //if ( bindResult < 0)
+      //  clog << "ERROR on binding\n" << flush;
     
     //listen to MAX_CLIENTS clients
     listen(sockfd, MAX_CLIENTS);
@@ -241,7 +244,7 @@ int main(int argc, char *argv[]) {
                     //open stream
                     case STREAM:
                         clog << "got STREAM\n" << flush;
-                        //system("startStream.sh");
+                        system("/home/pi/startCamera.sh");
                         sendData(newsockfd, OK);
                         break;
                     
