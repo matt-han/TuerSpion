@@ -10,9 +10,14 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.stage.Stage;
+
+import org.controlsfx.dialog.DialogStyle;
+import org.controlsfx.dialog.Dialogs;
+
 public class SocketController {
 	
-	final static String IP_ADDR = "localhost";
+	final static String IP_ADDR = "192.168.1.100";
 	final static String IP_PORT = "1988";
 	
 	public String checkString(String user_ID, String dl_ID){
@@ -34,17 +39,17 @@ public class SocketController {
 		} else if (dl_ID.length() == 4) {
 		
 		} 
-			
-		
-		
 		
 		return dl_ID+user_ID;
 		
 	}
 	
 	
-	public void SocketClient(String modus, String user_ID, String dl_ID) {
-		String string_ID= checkString(user_ID, dl_ID);
+	public void SocketClient(Stage stage, String modus, String user_ID, String dl_ID) {
+		String string_ID=null;
+		if (user_ID!=null || dl_ID!=null){
+			string_ID= checkString(user_ID, dl_ID);
+		}
 		Socket socket = null;
 	    try {
 	    	InetAddress inetAddress = InetAddress.getByName(IP_ADDR);
@@ -63,11 +68,26 @@ public class SocketController {
 	        printWriter.println(userInput);
 	        String serverEcho = scanner.nextLine();
 	        System.out.println(serverEcho);
+	        userScanner.close();
+	        scanner.close();
 	
 	    } catch (UnknownHostException ex) {
 	        Logger.getLogger(SocketController.class.getName()).log(Level.SEVERE, null, ex);
+	        Dialogs.create()
+	        .owner(stage)
+	        .title("Fehlermeldung")
+	        .masthead("Fehler bei der Socketverarbeitung")
+	        .message("Es ist ein Fehler aufgetreten. Mehr Informationen siehe unten.")
+	        .showException(ex);
+	        
 	    } catch (IOException ex1) {
 	        Logger.getLogger(SocketController.class.getName()).log(Level.SEVERE, null, ex1);
+	        Dialogs.create()
+	        .owner(stage)
+	        .title("Fehlermeldung")
+	        .masthead("Fehler bei der Socketverarbeitung")
+	        .message("Es ist ein Fehler aufgetreten. Mehr Informationen siehe unten.")
+	        .showException(ex1);
 	    } finally {
 	        if( socket != null){
 	            try {

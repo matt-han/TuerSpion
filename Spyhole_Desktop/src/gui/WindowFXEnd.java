@@ -1,11 +1,22 @@
 package gui;
 
+
+
+import org.controlsfx.dialog.DialogStyle;
+import org.controlsfx.dialog.Dialogs;
+
+import socket.SocketController;
+import controller.DoorLoggerController;
 import controller.LoginController;
+import controller.RegistrationController;
 import javafx.application.Application;
+import javafx.concurrent.Worker;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -23,6 +34,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import gui.TopFXEnd;
 //import socket.SocketController;
 
@@ -42,7 +54,7 @@ public class WindowFXEnd extends Application {
     }
     
     @Override
-    public void start(Stage stage) {
+    public void start(final Stage stage) {
 
 // Use a border pane as the root for scene
         final BorderPane border = new BorderPane();
@@ -75,16 +87,17 @@ public class WindowFXEnd extends Application {
 // call replaces the grid from the first call  
       //  System.out.print(LoginC.getValidateLogin());
         
-        final TextField TFUser = Top.TFUser;
+       final TextField TFUser = Top.TFUser;
         
-        final PasswordField PFPass = Top.PFPass;
+       final PasswordField PFPass = Top.PFPass;
         
-        final LoginController LoginC = new LoginController(TFUser.getText(),PFPass.getText());
+       final LoginController LoginC = new LoginController(stage);
         
         Top.btnGoLogin.setOnAction(new EventHandler<ActionEvent>() {  
 	        @Override  
-	        public void handle(ActionEvent e) {  
-	        	 LoginController LoginC = new LoginController(TFUser.getText(),PFPass.getText());
+	        public void handle(ActionEvent e) {    	
+	        	// final LoginController LoginC = new LoginController(TFUser.getText(),PFPass.getText());
+	        	LoginC.setLoginData(TFUser.getText(),PFPass.getText());
 	        	 Bottom.lblStatusString.setText("Anmelden...");
 	        	 Bottom.StringStatus = "Anmelden";
 	        	 LoginC.checkLoginDB();
@@ -96,6 +109,19 @@ public class WindowFXEnd extends Application {
 	        		 Bottom.lblStatusString.setText("Anmeldung erfolgreich...");
 	        	 } else {
 	        		 Bottom.lblStatusString.setText("Anmeldung fehlgeschlagen...");
+	        		 
+	        		 Dialogs.create()
+	        		 	.lightweight()
+	        		 	.style(DialogStyle.UNDECORATED)
+	        	        .owner(stage)
+	        	        .title("Fehlermeldung")
+	        	        .masthead("Fehler bei der Anmeldung")
+	        	        .message("Benutzername oder Passwort ist falsch.")
+	        	        .showError();
+//	        		 MessageBox.show(stage,
+//	        				 "Anmeldung fehlgeschlagen",
+//	        				 "Login fehlgeschlagen",
+//	        				 MessageBox.ICON_ERROR | MessageBox.OK);
 	        	 }
 	        }  
 	   });  
@@ -126,7 +152,7 @@ public class WindowFXEnd extends Application {
 	        	border.setCenter(Center.addRegisAnchorPane(Center.addRegisGridPane()));
 	        	Bottom.lblStatusString.setText("Registrierung...");
 	        	//SocketController socketC = new SocketController();
-	        	//socketC.SocketClient("2","22","11");
+	        //	socketC.SocketClient("2","22","11");
 	        }  
 	   });  
         
@@ -134,7 +160,15 @@ public class WindowFXEnd extends Application {
 	        @Override  
 	        public void handle(ActionEvent e) {  
 	        	border.setCenter(Center.addRegisAnchorPane(Center.addRegisGridPane()));
-	        	Bottom.lblStatusString.setText("Registrierung...");
+	        	Bottom.lblStatusString.setText("Registrierung läuft...");
+	        	controller.RegistrationController RegisC = new RegistrationController(Center.txtfUser.getText(), Center.txtfFirstName.getText(), Center.txtfLastName.getText(), Center.txtfMail.getText(), Center.PwfPassword.getText());
+	        	RegisC.checkToRegisDB();
+	        	if(RegisC.getCheckRegis()){
+	        		System.out.println("REGIS READY");
+	        		RegisC.saveRegis();
+	        	} else {
+	        		System.out.println("REGIS NOT READY");
+	        	}
 	        }  
 	   });  
         
@@ -144,6 +178,7 @@ public class WindowFXEnd extends Application {
 	        public void handle(ActionEvent e) {  
 	        	 border.setCenter(Center.addLoginGridPane());
 	        	 Bottom.lblStatusString.setText("Anmeldung erforderlich...");
+	        	 
 	        }  
 	   });  
         
@@ -161,7 +196,33 @@ public class WindowFXEnd extends Application {
 	        }  
 	   });  
         
+        Center.buttonOpenDoor.setOnAction(new EventHandler<ActionEvent>() {  
+	        @Override  
+	        public void handle(ActionEvent e) { 
+	        	DoorLoggerController DoorLoggerC = new DoorLoggerController();
+	        	String DoorLoggerID = DoorLoggerC.setDoorlogger(LoginC.getUserID());
+	        	System.out.println("DOORLOOGER ID : "+DoorLoggerID);
+	        	SocketController socketC = new SocketController();
+	        	socketC.SocketClient(stage, "2",LoginC.getUserID(),DoorLoggerID);
+	        	socketC = null;
+	        }  
+	   });  
         
+        Center.buttonStream.setOnAction(new EventHandler<ActionEvent>() {  
+	        @Override  
+	        public void handle(ActionEvent e) {  
+	        	SocketController socketC = new SocketController();
+	        	socketC.SocketClient(stage, "1",null,null);
+	        }  
+	   });  
+       
+        
+        Top.buttonExit.setOnAction(new EventHandler<ActionEvent>() {  
+	        @Override  
+	        public void handle(ActionEvent e) {  
+	        	Runtime.getRuntime().exit(0);
+	        }  
+	   });  
        
        
         
@@ -169,6 +230,7 @@ public class WindowFXEnd extends Application {
         border.setCenter(Center.addLoginGridPane());
         //border.setCenter(Center.addStreamAnchorPane(Center.addStreamGridPane()));
         Scene scene = new Scene(border);
+        //scene.getStylesheets().add("style.css");
         stage.setScene(scene);
         stage.setTitle("Spyhole");
         
@@ -180,7 +242,10 @@ public class WindowFXEnd extends Application {
         stage.setMinHeight(500);
         stage.setMaxHeight(500);
         
+        stage.initStyle(StageStyle.UNDECORATED);
+        
         stage.show();
+        
     }
 
 /*

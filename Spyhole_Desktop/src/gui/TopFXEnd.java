@@ -46,6 +46,8 @@ public class TopFXEnd {
 	
 	final Button buttonRegis = new Button("Registieren");
 	
+	final Button buttonExit = new Button("Beenden");
+	
 	final TextField TFUser = new TextField();
 	
 	final PasswordField PFPass = new PasswordField();
@@ -59,11 +61,9 @@ public class TopFXEnd {
 	
 	    TFUser.setDisable(false);
 	    
-		   
 	    PFPass.setDisable(false);
 	    
 	    TFUser.setPromptText("Benutzername");
-	    
 	   
 	    PFPass.setPromptText("Passwort");
 	    
@@ -71,13 +71,11 @@ public class TopFXEnd {
 	    
 	    PFPass.setText(null);
 	    
-	  //  Button btnGoLogin = new Button("Anmelden");
 	    btnGoLogin.setPrefSize(100, 20);
-	    
-	    
+	    buttonExit.setPrefSize(100, 20);
 	    buttonRegis.setPrefSize(100, 20);
 	    
-	    hbox.getChildren().addAll(TFUser, PFPass, btnGoLogin, buttonRegis);
+	    hbox.getChildren().addAll(TFUser, PFPass, btnGoLogin, buttonRegis, buttonExit);
 	    
 	    return hbox;
 	}

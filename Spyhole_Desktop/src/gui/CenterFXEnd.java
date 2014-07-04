@@ -53,8 +53,16 @@ public class CenterFXEnd {
 	final Button buttonOpenDoor = new Button("Tür öffnen");
 	final Button buttonBackToStream = new Button("Zurück zum Stream");
 	
+	final TextField txtfUser = new TextField();
+	final TextField txtfFirstName = new TextField();
+	final TextField txtfLastName = new TextField();
+	final TextField txtfMail = new TextField();
+	final PasswordField PwfPassword = new PasswordField();
+	final PasswordField PwfCheckPassword = new PasswordField();
+	
 	//final static String IP_STREAM = "http://10.0.0.50:1900/javascript_simple.html";
-	final static String IP_STREAM = "https://mperkowski.com";
+	//final static String IP_STREAM = "https://mperkowski.com";
+	final static String IP_STREAM = "http://192.168.1.100:1900/javascript_simple.html";
 	//final static String IP_STREAM = "http://spyhole.no-ip.biz:1900/javascript_simple.html";
 	
 	
@@ -86,7 +94,6 @@ public class CenterFXEnd {
 		Label lblUser = new Label("Benutzername: ");
 		grid.add(lblUser, 1, 2);
 		 
-		TextField txtfUser = new TextField();
 		txtfUser.setPromptText("Hier Benutzername eingeben...");
 		txtfUser.setMinWidth(250);
 		grid.add(txtfUser, 2, 2);
@@ -94,35 +101,35 @@ public class CenterFXEnd {
 		Label lblFirstName = new Label("Vorname: ");
 		grid.add(lblFirstName, 1, 3);
 		 
-		TextField txtfFirstName = new TextField();
+		
 		txtfFirstName.setPromptText("Hier Vorname eingeben...");
 		grid.add(txtfFirstName, 2, 3);
 		
 		Label lblLastName = new Label("Nachname: ");
 		grid.add(lblLastName, 1, 4);
 		 
-		TextField txtfLastName = new TextField();
+		
 		txtfLastName.setPromptText("Hier Nachname eingeben...");
 		grid.add(txtfLastName, 2, 4);
 		
 		Label lblMail = new Label("E-Mail Adresse: ");
 		grid.add(lblMail, 1, 5);
 		 
-		TextField txtfMail = new TextField();
+		
 		txtfMail.setPromptText("Hier E-Mail Adresse eingeben...");
 		grid.add(txtfMail, 2, 5);
 		
 		Label lblPassword = new Label("Passwort: ");
 		grid.add(lblPassword, 1, 6);
 		 
-		PasswordField PwfPassword = new PasswordField();
+		
 		PwfPassword.setPromptText("Hier Password eingeben...");
 		grid.add(PwfPassword, 2, 6);
 		
 		Label lblCheckPassword = new Label("Passwort zur Bestätigung: ");
 		grid.add(lblCheckPassword, 1, 7);
 		 
-		PasswordField PwfCheckPassword = new PasswordField();
+		
 		PwfCheckPassword.setPromptText("Hier Password eingeben...");
 		grid.add(PwfCheckPassword, 2, 7);
 		
