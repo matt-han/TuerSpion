@@ -6,7 +6,7 @@
 %%	
 
 \chapter{Desktop App}
-Zu der Android App gibt es parallel eine App für den Desktop. Diese wurde mit JavaFX  programmiert. In den folgenden Kapiteln wird die ungefähre Programmierung der einzelnen View's beschrieben.
+Zu der Android App gibt es parallel eine App für den Desktop. Diese wurde mit JavaFX  programmiert. In den folgenden Kapiteln wird die Programmierung der einzelnen View's beschrieben.
 
 \lstset{language=Java,
 				backgroundcolor=\color{light-gray},
@@ -24,7 +24,7 @@ Zu der Android App gibt es parallel eine App für den Desktop. Diese wurde mit J
 				
 				
 \section{Was ist JavaFX ?}
-JavaFX ist eine Java-Spezifikation, die als Hauptkonkurrenten Adobe Flash und Microsoft Silverlight hat. Ein positiver Punkt ist die Lauffähigkeit auf diversen Geräten wie z.B. Mobilfunk, Desktop-Computern, Embedded Geräten und Blu-ray Geräten. Die Programmierung wird normal in Java programmiert. Die dazugehörigen Bibliotheken werden seit der Java SE Runtime 7 Update 6 automatisch mit installiert. Es ist unter anderem auf die Grafikprogrammierung ausgelegt. Dadurch lassen sich grafische Elemente schnell programmieren und mit CSS gestalten.
+JavaFX ist eine Java-Spezifikation, die als Hauptkonkurrenten Adobe Flash und Microsoft Silverlight hat. Ein positiver Punkt ist die Lauffähigkeit auf diversen Geräten wie z.B. Mobilfunk, Desktop-Computern, Embedded Geräten und Blu-ray Geräten. Die Programmierung wird normal in Java programmiert. Die dazugehörigen Bibliotheken werden seit der Java SE Runtime 7 Update 6 automatisch mitinstalliert. Es ist unter anderem auf die Grafikprogrammierung ausgelegt. Dadurch lassen sich grafische Elemente schnell programmieren und mit CSS gestalten.
 Ein sehr bekanntes Embedded Gerät, wofür es auch JavaFX gibt, ist das Raspberry Pi. \cite{bib.jFXRaspPi}
 
 \section{Struktur und Aufbau der App}
@@ -34,7 +34,7 @@ Es gibt insgesamt fünf verschiedene View's in der App.
 	\item Registrierung (siehe \ref{subsec.registrierung})
 	\item Control (siehe \ref{subsec.control})
 	\item Datenbank (siehe \ref{subsec.datenbank})
-	\item Foto (siehe \ref{subsec.foto})
+	\item Bilderlog (siehe \ref{subsec.foto})
 \end{itemize}
 
 In JavaFX ist ein Fenster ein Stage-Objekt. In diesem Stage-Objekt sind fünf verschiedenen View's implementiert. Diesen View-Objekte können mehrere anderer Objekte hinzugefügt werden. Bei diesen anderen Objekten kann es sich um Buttons, eine Tabelle, ein Textfeld usw. handeln.
@@ -49,7 +49,7 @@ In JavaFX ist ein Fenster ein Stage-Objekt. In diesem Stage-Objekt sind fünf ve
 
 \subsection{Login}
 \label{subsec.login}
-Bei der Login View muss sich der Nutzer mit seinem Usernamen und Passwort, was in der Datenbank hinterlegt ist, anmelden. Ist einer der Felder nicht ausgefüllt oder das Passwort bzw. der User nicht korrekt, wird das mit einem \texttt{Label} als Message dargestellt. %Über eine \texttt{CheckBox} kann der Benutzer sich sein Passwort in Klartext anzeigen oder verbergen lassen. Dies wurde so realisiert das ein \texttt{TextField} Objekt und ein \texttt{PasswordField} Objekt direkt übereinander gelegt wurden. Der Initialisierungszustand ist der, das das \texttt{PasswordField} sichtbar und das \texttt{TextField} unsichtbar ist. Mit der \texttt{CheckBox} wird das Ganze dann getoggelt.
+Bei der Login View muss sich der Nutzer mit seinem Usernamen und Passwort, was in der Datenbank hinterlegt ist, anmelden. Ist einer der Felder nicht ausgefüllt oder das Passwort bzw. der User nicht korrekt, wird das mit einem \texttt{Label} als Message dargestellt. Das Passwort-Feld ist immer maskiert. %Über eine \texttt{CheckBox} kann der Benutzer sich sein Passwort in Klartext anzeigen oder verbergen lassen. Dies wurde so realisiert das ein \texttt{TextField} Objekt und ein \texttt{PasswordField} Objekt direkt übereinander gelegt wurden. Der Initialisierungszustand ist der, das das \texttt{PasswordField} sichtbar und das \texttt{TextField} unsichtbar ist. Mit der \texttt{CheckBox} wird das Ganze dann getoggelt.
 %\begin{lstlisting}[caption={Java Passwort-, Textfeld Un-, Sichtbar}%\label{lst:reg.java.pw.txt},captionpos=b]
 %		pwTextField.managedProperty().bind(checkBox.selectedProperty());
 %		pwTextField.visibleProperty().bind(checkBox.selectedProperty());
@@ -72,7 +72,7 @@ Bei der Login View muss sich der Nutzer mit seinem Usernamen und Passwort, was i
 
 \subsection{Registrierung}
 \label{subsec.registrierung}
-Falls der Benutzer noch kein Konto in der Datenbanktabelle \texttt{tb\_users} hat, hat er die Möglichkeit, sich über die Registrierung View anzumelden. Softwareseitig wurde eine Überprüfung eingebaut, dass jedes Textfeld etwas beinhalten muss. Bei den Passwortfeldern wird überprüft, ob die beiden Passwörter, die eingegeben wurden, identisch sind. Wenn alle Überprüfungen korrekt sind, wird aus den Eingaben und einem SQL Befehl \texttt{NOW()} ein SQL-String gebaut und an die Datenbank geschickt. Falls die Überprüfung fehlgeschlagen ist, wird wie bei der Login View (s. \ref{subsec.login}) eine \texttt{Label} Message ausgegeben.
+Falls der Benutzer noch kein Account in der Datenbanktabelle \texttt{tb\_users} hat, hat er die Möglichkeit, sich über die Registrierung View anzumelden. Softwareseitig wurde eine Überprüfung eingebaut, dass jedes Textfeld etwas beinhalten muss. Bei den Passwortfeldern wird überprüft, ob die beiden Passwörter, die eingegeben wurden, identisch sind. Wenn alle Überprüfungen korrekt sind, wird aus den Eingaben und einem SQL Befehl \texttt{NOW()} ein SQL-String gebaut und an die Datenbank geschickt.  Falls die Überprüfung fehlgeschlagen ist, wird wie bei der Login View (s. \ref{subsec.login}) eine \texttt{Label} Message ausgegeben. Des Weiteren wird auch bei der Übertragung der SQL-Syntax überprüft, ob der Username schon in der Datenbanktabelle \texttt{tb\_users} existiert. Somit wird Doppeleinträge in der Datenbanktabelle verhindert.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %referenz auf die DB wie sie aufgebaut ist ???
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -90,8 +90,8 @@ Der folgende String zeigt die Darstellung, wie der obige String mit Nutzerdaten 
 			 'Hassi', '007', NOW())
 \end{lstlisting}
 
-Der Befehl \texttt{NOW()} wird in der Datenbank mit dem aktuellen Datum und Uhrzeit ersetzt.
-Die Sichtbarkeit der Anmeldedaten ist nur direkt innerhalb der Applikation möglich. In diesem Fall mit einem System.out.println() in Eclipse. Was nicht mehr weiter implementiert wurde, ist eine zusätzliche Freischaltung des neuen Users von einem Admin. Nach direkter Registrierung kann sich der User sofort anmelden.
+Der Befehl \texttt{NOW()} wird in der Datenbank mit dem aktuellen Datum und Uhrzeit gesetzt.
+Die Sichtbarkeit der Anmeldedaten ist nur direkt innerhalb der Applikation möglich. In diesem Fall mit einem System.out.println() in Eclipse. Was noch  implementiert wurde, ist eine zusätzliche Freischaltung des neuen Users von einem Administrator. Nach direkter Registrierung und Freischaltung von einem Administrator kann sich der User anmelden.
 \begin{figure}[h]
   \begin{center}
     \includegraphics[scale=0.6]{regStage.png}
@@ -128,7 +128,7 @@ Nach dem Betätigen des Buttons \texttt{Tür öffnen} werden zwei Funktionen auf
 
 \subsection{Datenbank}
 \label{subsec.datenbank}
-Diese View hat als Hauptobjekt eine Tabelle (TableView). Der Tabelleninhalt wird dynamisch erstellt. In einer zusätzliche Klasse wird überprüft, wie viele Spalten die Datenbank hat und fügt diese dann dem Tabellen-Objekt hinzu. Nach dem Hinzufügen der Spalten wird Zeile für Zeile aus der Datenbank geholt und in die Tabelle geladen. Zu jedem Eintrag in die Datenbanktabelle \texttt{tb\_doorlogger} gehört ein Bild. Um sich zu einen entsprechenden Tabelleneintrag das Bild anzusehen, muss man über eine Combobox die ID der Zeile auswählen und auf den Button \texttt{Bild laden} klicken. Im Moment ist die Implementierung der TableView noch nicht fertig, daher funktioniert die TableView mit Darstellung der Bilder nicht richtig. %Mehr dazu im Kapitel \ref{subsec.foto}. %Die Combobox zeigt nur so viele Zahlen wie es Zeilen in der Tabelle gibt. Wenn nichts in der Datenbank steht und dadurch auch kein Eintrag in die Tabelle gemacht wird, werden die Combobox und der \texttt{Open Picture} Button deaktiviert. Gibt es Einträge in der Datenbank, so ist die Standarteinstellung der Combobox auf 1.
+Diese View hat als Hauptobjekt eine Tabelle (TableView). Der Tabelleninhalt wird dynamisch erstellt. In einer zusätzliche Klasse wird überprüft, wie viele Spalten die Datenbank hat und fügt diese dann dem Tabellen-Objekt hinzu. Nach dem Hinzufügen der Spalten wird Zeile für Zeile aus der Datenbank geladen und in die Tabelle gefüllt. Zu jedem Eintrag in die Datenbanktabelle \texttt{tb\_doorlogger} gehört ein Bild. Um sich zu einen entsprechenden Tabelleneintrag das Bild anzusehen, muss man über eine Combobox die ID der Zeile auswählen und auf den Button \texttt{Bild laden} klicken. Im Moment ist die Implementierung der TableView noch nicht fertig, daher funktioniert die TableView mit Darstellung der Bilder nicht richtig. %Mehr dazu im Kapitel \ref{subsec.foto}. %Die Combobox zeigt nur so viele Zahlen wie es Zeilen in der Tabelle gibt. Wenn nichts in der Datenbank steht und dadurch auch kein Eintrag in die Tabelle gemacht wird, werden die Combobox und der \texttt{Open Picture} Button deaktiviert. Gibt es Einträge in der Datenbank, so ist die Standarteinstellung der Combobox auf 1.
 
 \begin{figure}[h]
   \begin{center}
