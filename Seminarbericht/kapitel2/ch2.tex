@@ -300,7 +300,7 @@ Unter die vielen Möglichkeiten das OpenCV anbietet, ist für dieses Projekt die
 
 
 \subsection{Logarithmus traineren}
-Unter Logarithmus trainieren wird gemeint, den Gesichtserkennungsalgorithmus wird bekannt gemacht anhand vorhandenen Bilder, welche Personen identifiziert werden. Dafür müssen Bilder von den jeweiligen Personen im System gespeichert sein. Um eine höhere Übertragungsrate zu erreichen werden die Bilder der Kamera nur in Schwarz-Weiß aufgenommen. Deswegen müssen die Trainingsbilder im gleichen Format vorliegen. Mittels eines C-Programmes werden die Gesichter geschnitten und in einen neuen Schwarz-Weiß Bild gespeichert.\\
+Unter Logarithmus trainieren wird gemeint, den Gesichtserkennungsalgorithmus wird bekannt gemacht anhand vorhandenen Bilder, welche Personen identifiziert werden. Dafür müssen Bilder von den jeweiligen Personen im System gespeichert sein. Um eine höhere Übertragungsrate (nach Erfahrungen 13-17 FPS) zu erreichen, werden die Bilder der Kamera nur in Grautöne aufgenommen. Deswegen müssen die Trainingsbilder im gleichen Format vorliegen. Mittels eines C-Programmes werden die Gesichter geschnitten und in einen neuen Schwarz-Weiß Bild gespeichert.\\
 
 \begin{figure}[h]
   \begin{center}		%width=\linewidth
@@ -361,12 +361,12 @@ MJPG-Streamer bittet die Möglichkeit Videodaten von einer Videoquelle als Motio
   \item subversion
 \end{itemize}
 
-Das aktuelle Quellcode muss von der Webseite \textit{http://sourceforge.net/projects/mjpg-streamer/} heruntergeladen werden und dementsprechend kompiliert werden.\cite{bib.mjpgStreamer} Über einem Webbrowser hat man Zugriff auf das Stream. Im diesem Projekt lautet die Adresse für das Stream \textit{spyhole.no-ip:1900} (der Default Port 8080 wurde auf 1900 geändert). Hier wird eine Oberfläche mit verschiedenen Streamoptionen dargestellt. Unter anderem Java und Javascript, sowie die Möglichkeit das Stream mittels das Programm VLC zu sehen. Durch Personalisieren dieser Webseite haben unsere Desktop und Mobile App zugriff auf das Stream.\\
+Das aktuelle Quellcode muss von der Webseite \textit{http://sourceforge.net/projects/mjpg-streamer/} heruntergeladen werden und dementsprechend kompiliert werden.\cite{bib.mjpgStreamer} Über einem Webbrowser hat man Zugriff auf das Stream. Der Stream basiert auf HTTP und TCP.   Im diesem Projekt lautet die Adresse für das Stream \textit{spyhole.no-ip:1900} (der Default Port 8080 wurde auf 1900 geändert). Hier wird eine Oberfläche mit verschiedenen Streamoptionen dargestellt. Unter anderem Java und Javascript, sowie die Möglichkeit das Stream mittels das Programm VLC zu sehen. Durch Personalisieren dieser Webseite haben unsere Desktop und Mobile App zugriff auf das Stream.\\
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Socket}
-Damit die Clients (Android App und Desktop App) mit dem Server (Raspberry Pi) kommunizieren können, haben wir ein Socket \footnote{Software-Modul mi dessen sich ein Computerprogramm in einem Rechnernetz und mit anderen Computern Daten austauscht} programmiert. Wir haben uns für ein TCP Socket entschieden, da wir die Verbindungsorientierung und Übertragungssicherheit von TCP benötigen, um eine gewisse Sicherheit des System gewährleisten zu können. Ein weitere Vorteil ist, dass Kommandos als lokaler Benutzer ausgeführt werden können. Das heißt man vermeidet viele Probleme mit der Rechtevergabe von ausführbaren Dateien und Programme.\\
+Damit die Clients (Android App und Desktop App) mit dem Server (Raspberry Pi) kommunizieren können, haben wir ein Socket \footnote{Software-Modul mi dessen sich ein Computerprogramm in einem Rechnernetz und mit anderen Computern Daten austauscht} programmiert. Wir haben uns für ein TCP Socket entschieden, da wir die Verbindungsorientierung und Ausfallsicherheit von TCP benötigen, um eine gewisse Sicherheit des System gewährleisten zu können. Ein weitere Vorteil ist, dass Kommandos als lokaler Benutzer ausgeführt werden können. Das heißt man vermeidet viele Probleme mit der Rechtevergabe von ausführbaren Dateien und Programme.\\
 
 Auf der Serverseite werden zwei Kommandos erwartet. Diese lauten "'Tür öffnen'' oder "'Stream starten''. Im Fall dass der Stream gestartet werden soll, wird hier ein Shell-Script aufgerufen, dass die Kamera und die Gesichtserkennung aktiviert. Bei der Kamera wurde ein Timeout von einer Minute eingestellt, für den Fall, dass der Benutzer sich nicht abmeldet. Somit wird vermieden, dass die Kamera unnötigerweise aktiv ist.\\
 
