@@ -90,7 +90,7 @@ Stromversorgung & 5V Micro-USB Anschluss\\ \hline
 \cite{bib.RaspPi}\cite{bib.RaspPiGuide}
 %\footnote{http://www.raspberrypiguide.de; http://www.raspberrypi.org; 15.01.2014}
 
-
+Während der Entwicklung dieses Projektes haben wir bemerkt, dass der Prozessor sehr belastet wird (besonders wenn die Gesichtserkennung aktiviert wird). Darum haben wir uns als Team entschieden den Raspberry Pi zu übertakten. Wir sind ein Kompromiss eingegangen und das Raspberry Pi auf eine mittlere Übertaktung einzustellen.
 \newpage
 
 %%-------------------------------------------------------------------
@@ -310,7 +310,7 @@ Unter Logarithmus trainieren wird gemeint, den Gesichtserkennungsalgorithmus wir
   \end{center}
 \end{figure}
 
-\newpage
+%\newpage
 Mittels einer csv-Datei wird zu jeder Person eine Identifikationsnummer zugewiesen und dem Hauptprogramm bekannt gegeben, wo diese Bilder gespeichert sind. Zum Beispiel:\\
 
 \begin{lstlisting}
@@ -319,21 +319,32 @@ Mittels einer csv-Datei wird zu jeder Person eine Identifikationsnummer zugewies
 /home/pi/pictures/Person3.jpg;3
 \end{lstlisting}
 
+Leider ist uns nicht gelungen, ein stabiles System zu bauen, indem die Personenerkennung als sicheres Identifikationsmerkmal betrachtet werden kann. Es ist nötig, mehrere Merkmale auszuwerten und dafür stoßen wir an den Grenzen unseres Prozessors, obwohl dieser für Versuche übertaktet wurde.
+
 
 %%-------------------------------------------------------------------
 \subsection{Kamera Initializieren}
-Videos sind die Wiedergabe von einer Bildersequenz, also werden einzelne Bilder bearbeitet und ausgewertet.  Zuerst wird die angeschlossene Webcam angesprochen und die Videoaufnahme gestartet. Dies folgt dem gleichen Prinzip wie eine Datei öffnen und aus dieser Datei Zeilenweise lesen. Jede gelesene Zeile wird gespeichert und von einem andere Algorithmus bearbeitet. Bei der Webcam werden einzelne Bilder gespeichert und danach bearbeitet.\\
+Videos sind die Wiedergabe von einer Bildersequenz, also werden einzelne Bilder bearbeitet und ausgewertet.  Zuerst wird die angeschlossene Kamera angesprochen und die Videoaufnahme gestartet. Dies folgt dem gleichen Prinzip wie eine Datei öffnen und aus dieser Datei Zeilenweise lesen. Jede gelesene Zeile wird gespeichert und von einem andere Algorithmus bearbeitet. Bei der Kamera werden einzelne Bilder gespeichert und danach bearbeitet.\\
  
 \subsection{Bild auswerten}
- Wenn ein Bild gespeichert worden ist, kann dieser ausgewertet werden. Als erstes wird versucht, mittels OpenCV, ein Gesicht im das jeweilige Bild zu erkennen. Ist dieser Schritt erfolgreich, wird um das erkannte Gesicht ein Viereck gezeichnet. Danach versucht das Algorithmus anhand der mit der csv-Datei ausgewertete Bilder, festzustellen ob diese Person bekannt ist. Falls ja, wird anhand der Identifikationsnummer ein Name (im Programmcode fest kodiert) hinzugefügt. \\
+ Wenn ein Bild gespeichert worden ist, kann dieser ausgewertet werden. Als erstes wird versucht, mittels OpenCV, ein Gesicht im das jeweilige Bild zu erkennen. Ist dieser Schritt erfolgreich, wird um das erkannte Gesicht ein Viereck gezeichnet. Danach versucht das Algorithmus anhand der mit der csv-Datei ausgewertete Bilder, festzustellen ob diese Person bekannt ist. Falls ja, wird anhand der Identifikationsnummer ein Name (im Programmcode fest kodiert) hinzugefügt (Siehe Abbildungen \ref{unknown} und \ref{marcus}. \\
 
 
+%OK......
 \begin{figure}[h]
-  \begin{center}		%width=\linewidth
-    \includegraphics[scale=0.5]{unknown.png}
-  		  \caption{Nicht erkannte Person}
-     \label{unknown}
-  \end{center}
+\begin{minipage}[h]{5cm}
+	\centering
+	\includegraphics[width=\textwidth]{unknown.png}
+	\caption{Nicht erkannte Person}
+	\label{unknown}
+\end{minipage}
+\hfill
+\begin{minipage}[h]{5cm}
+	\centering
+	\includegraphics[width=\textwidth]{marcus.png}
+	\caption{Erkannte Person mit festkodierten Nametag}
+	\label{marcus}
+\end{minipage}
 \end{figure}
 
 Dieses bearbeitetes Bild wird für die Ausgabe über den Streamer gespeichert. Der Streamer liest das bereits ausgewertete Bild nach der Gesichtserkennung und stellt es als Stream zur Verfügung.
@@ -350,5 +361,15 @@ MJPG-Streamer bittet die Möglichkeit Videodaten von einer Videoquelle als Motio
   \item subversion
 \end{itemize}
 
-Das aktuelle Quellcode muss von der Webseite \textit{http://sourceforge.net/projects/mjpg-streamer/} heruntergeladen werden und dementsprechend kompiliert werden.\cite{bib.mjpgStreamer} Über einem Webbrowser hat man Zugriff auf das Stream. Im diesem Projekt lautet die Adresse für das Stream \textit{spyhole.no-ip:1900}(der Default Port 8080 wurde auf 1900 geändert). Hier wird eine Oberfläche mit verschiedenen Streamoptionen dargestellt. Unter anderem Java und Javascript, sowie die Möglichkeit das Stream mittels das Programm VLC zu sehen. Durch Personalisieren dieser Webseite haben unsere Desktop und Mobile App zugriff auf das Stream.\\
+Das aktuelle Quellcode muss von der Webseite \textit{http://sourceforge.net/projects/mjpg-streamer/} heruntergeladen werden und dementsprechend kompiliert werden.\cite{bib.mjpgStreamer} Über einem Webbrowser hat man Zugriff auf das Stream. Im diesem Projekt lautet die Adresse für das Stream \textit{spyhole.no-ip:1900} (der Default Port 8080 wurde auf 1900 geändert). Hier wird eine Oberfläche mit verschiedenen Streamoptionen dargestellt. Unter anderem Java und Javascript, sowie die Möglichkeit das Stream mittels das Programm VLC zu sehen. Durch Personalisieren dieser Webseite haben unsere Desktop und Mobile App zugriff auf das Stream.\\
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Socket}
+Damit die Clients (Android App und Desktop App) mit dem Server (Raspberry Pi) kommunizieren können, haben wir ein Socket \footnote{Software-Modul mi dessen sich ein Computerprogramm in einem Rechnernetz und mit anderen Computern Daten austauscht} programmiert. Wir haben uns für ein TCP Socket entschieden, da wir die Verbindungsorientierung und Übertragungssicherheit von TCP benötigen, um eine gewisse Sicherheit des System gewährleisten zu können. Ein weitere Vorteil ist, dass Kommandos als lokaler Benutzer ausgeführt werden können. Das heißt man vermeidet viele Probleme mit der Rechtevergabe von ausführbaren Dateien und Programme.\\
+
+Auf der Serverseite werden zwei Kommandos erwartet. Diese lauten "'Tür öffnen'' oder "'Stream starten''. Im Fall dass der Stream gestartet werden soll, wird hier ein Shell-Script aufgerufen, dass die Kamera und die Gesichtserkennung aktiviert. Bei der Kamera wurde ein Timeout von einer Minute eingestellt, für den Fall, dass der Benutzer sich nicht abmeldet. Somit wird vermieden, dass die Kamera unnötigerweise aktiv ist.\\
+
+Will der Benutzer die Tür öffnen, werden zwei weitere Informationen benötigt. Der Client schickt dem Server folgendes Befehl: "'2xxxxyyy''; wo "'xxxx'' für die ID des Eintrags in der Tabelle \textit{tb\_doorlogger} steht und "'yyy'' für die User ID, die die Tür öffnen möchte. Beide Werte werden in der Tabelle \textit{tb\_images} eingetragen, sowie der Name des aufgenommenes Bildes.\\
+
+Wenn die Nachrichten abgearbeitet worden, bekommt der Client ein "'ACK'' zurück und die Verbindung wird geschlossen. Sollten verfälschten Nachrichten ankommen, werden diese abgefangen und der Sender bekommt als Antwort ein Fehlercode (durch die Benutzung von TCP erwarten wir selten solche Fälle).
