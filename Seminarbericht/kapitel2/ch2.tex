@@ -47,7 +47,7 @@ Das Raspberry Pi ist ein kreditkartengroßer Einplatinencomputer von der \textit
 
 Ziel der Entwicklung des Raspberry Pi ist das Interesse an dem Studium der Informatik und ähnliche Fachgebiete zu fördern, bzw. einen günstigen Computer zum Programmieren und Experimentieren anbieten zu können.\\
 
-Durch die geringe Leistungsaufnahme, günstigen Preis und viele verschiedene Ausbau- und Personalisierungsmöglichkeiten können Raspberry Pi’s für verschiedene Zwecke eingesetzt werden. Unter anderem sind beliebte Projekte für den Haushalt Wetterstationen, Radiosender, Media Center, NAS, etc.
+Durch die geringe Leistungsaufnahme, günstigen Preis und viele verschiedene Ausbau- und Personalisierungsmöglichkeiten können Raspberry Pi’s für verschiedene Zwecke eingesetzt werden. Unter anderem sind beliebte Projekte für den Haushalt, Wetterstationen, Radiosender, Media Center, NAS, etc.
 
 \newpage
 
@@ -131,7 +131,7 @@ Die Kamera wurde speziell für den Raspberry Pi entwickelt, diese wird an die CS
 
 %%-------------------------------------------------------------------
 \subsection{Betriebssystem}
-Für das Raspberry Pi wurden mehrere Open Source Betriebssysteme programmiert. Alle basieren auf verschiedene Linux Distributionen(u.a. OpenSUSE, Fedora, FreeBSD, Debian). Je nach Bedarf kann sich jeder Nutzer für eine Distribution entscheiden. Eins der beliebtesten Distributionen ist Raspbian, basierend auf Debian, was auch in diesem Projekt benutzt wird. Raspbian beinhaltet alle Grundprogramme und -Utilities, die mit vielen verschiedenen Packages kompatibel sind. Dieses Betriebssystem hat sich im Laufe der Zeit als sehr stabil bewiesen.\\
+Für das Raspberry Pi wurden mehrere Open-Source Betriebssysteme programmiert. Alle basieren auf verschiedene Linux Distributionen(u.a. OpenSUSE, Fedora, FreeBSD, Debian). Je nach Bedarf kann sich jeder Nutzer für eine Distribution entscheiden. Eine der beliebtesten Distributionen ist Raspbian, basierend auf Debian, was auch in diesem Projekt benutzt wird. Raspbian beinhaltet alle Grundprogramme und -Utilities, die mit vielen verschiedenen Packages kompatibel sind. Dieses Betriebssystem hat sich im Laufe der Zeit als sehr stabil bewiesen.\\
 
 Es gibt auch die Möglichkeit, Windows auf das Raspberry Pi zu installieren, obwohl Nutzer davon abgeraten werden. Das Windows Betriebssystem benötigt zu viele Ressourcen und läuft sehr langsam und instabil auf das Raspberry Pi.\\
 
@@ -142,9 +142,9 @@ Andere Distributionen sind gebrauchorientiert aufgestellt, wie zum Beispiel für
 
 %%-------------------------------------------------------------------
 \subsection{LAMP Webserver}
-LAMP steht für Linux Apache MySQL PHP Webserver. Auf das Raspberry Pi wurde ein LAMP Server installiert, um die Desktop/Mobil Applikation mit dem Pi zu verbinden und Informationen auszutauschen. Durch die Einstellung eines DNS kann auf das Videostreams sowie auf die MySQL Datenbank zugegriffen werden. Damit \textit{http} oder \textit{ssh} Anfragen zum Server im Raspberry Pi ankommen, müssen Ports für die Verbindung zur Verfügung gestellt werden. Im diesen Fall muss jeweils ein Port für die SSH-Verbindung, den Videostream und die Datenbankzugriffe freigegeben werden.\\
+LAMP steht für \textbf{L}inux \textbf{A}pache \textbf{M}ySQL \textbf{P}HP (sowie Perl und Python) Webserver. Auf das Raspberry Pi wurde ein LAMP Server installiert, um die Desktop/Mobil Applikation mit dem Pi zu verbinden und Informationen auszutauschen. Durch die Einstellung eines DNS kann auf das Video-Stream sowie auf die MySQL Datenbank zugegriffen werden. Damit \textit{http} oder \textit{ssh} Anfragen zum Server im Raspberry Pi ankommen, müssen Ports für die Verbindung zur Verfügung gestellt werden. Im diesen Fall muss jeweils ein Port für die SSH-Verbindung, den Videostream und die Datenbankzugriffe freigegeben werden.\\
 
-Um das LAMP Webserver zu installieren, werden folgende Kommandos mit Administratorrechte ausgeführt:\\
+Um den LAMP Webserver zu installieren, werden folgende Kommandos mit Administratorrechte ausgeführt:\\
 \begin{lstlisting}
 apt-get install apache2
 apt-get install mysql-server
@@ -154,19 +154,19 @@ sudo apt-get install php5-mysql
 
 %%-------------------------------------------------------------------
 \subsection{SSH Zugriff}
-Damit das Team gleichzeitig auf das Raspberry Pi arbeiten können, wurde auf das System eine SSH-Verbindung eingestellt. So wurden auch Entwicklungskosten gespart, weil nicht jedes Teammitglied ein System benötigte.\\
+Damit das Team gleichzeitig auf dem Raspberry Pi arbeiten können, wurde auf das System eine SSH-Verbindung eingestellt. So wurden auch Entwicklungskosten gespart, weil nicht jedes Teammitglied ein System benötigte.\\
 
 Um das Raspberry Pi per Fernzugriff zu betreiben, ist es nötig, eine \textit{Secure Shell} Verbindung aufzubauen. Durch die Verfügung einer SSH-Verbindung können Updates, Support und Wartungsarbeiten per Fernzugriff auf das System ausgeübt werden, dieses spart Kosten für den Kunden sowie für den Support.
 
-Als Sicherheitsmaßnahmen wurde der Standardport für SSH-Verbindungen (Port 22) auf ein anderen Port geändert und eine Public Key Authentifizierung implementiert. Um den Port für die SSH-Verbindung zu ändern, muss in der Datei \textit{/etc/ssh/sshd\_config} der Wert \textit{\#Port} auf den gewünschten Wert gesetzt werden. Danach muss der Dienst neu gestartet werden und somit ist der neue Port eingestellt. Wichtig ist, dass der neu eingestellte Port im Router freigeschaltet wird, oder gezielt zur IP-Adresse des Systems weitergeleitet wird.\\
+Als Sicherheitsmaßnahmen wurde der Standardport für SSH-Verbindungen (Port 22) auf anderen Port geändert und eine Public-Key Authentifizierung implementiert. Um den Port für die SSH-Verbindung zu ändern, muss in der Datei \textit{/etc/ssh/sshd\_config} den Wert \textit{\#Port} auf den gewünschten Wert gesetzt werden. Danach muss der Dienst neu gestartet werden und somit ist der neue Port eingestellt. Wichtig ist, dass der neu eingestellte Port im Router freigeschaltet wird, oder gezielt zur IP-Adresse des Systems weitergeleitet wird.\\
 
-Die Public Key Authentifizierung erfolgt, indem der Benutzer einen privaten und einen öffentlichen Schlüssel erstellt. Der private Schlüssel wird am Client gespeichert und der öffentlicher Schlüssel am Server. Mit dem Befehl
+Die Public-Key Authentifizierung erfolgt, indem der Benutzer einen privaten und einen öffentlichen Schlüssel erstellt. Der private Schlüssel wird am Client gespeichert und der öffentlicher Schlüssel am Server. Mit dem Befehl
 
 \begin{lstlisting}
 ssh-keygen -t dsa
 \end{lstlisting}
 
-werden die Schlüssel generiert. Hier muss der Benutzer ein Passwort eingeben, mit dem sich er am Server anmelden wird. In der Regel heißen beiden Schlüssel \textit{id\_das} und \textit{id\_das.pub}. Der private Schlüssel muss an das Client bekannt gemacht werden, indem man in der \textit{/ssh2/identification} Datei die Zeile 
+werden die Schlüssel generiert. Hier muss der Benutzer ein Passwort eingeben, mit dem sich er am Server anmelden wird. In der Regel heißen beiden Schlüssel \textit{id\_das} und \textit{id\_das.pub}. Der private Schlüssel muss am Client bekannt gemacht werden, indem man in der \textit{/ssh2/identification} Datei die Zeile 
 
 \begin{lstlisting}
 idkey id_dsa
@@ -178,7 +178,7 @@ bearbeitet oder einbaut. Der Inhalt des öffentlichen Schlüssels muss in der Da
 cat new_key.pub >> .ssh/authorized_keys
 \end{lstlisting}
 
-Jetzt ist der Client und der Server so konfiguriert, dass nur Rechner mit dem privaten Schlüssel Zugriff über den konfigurierten Port auf den Server haben.
+Jetzt ist der Client und der Server so konfiguriert, dass nur Rechner mit dem privaten Schlüssel Zugriff über den konfigurierten Port auf dem Server haben.
 Eine SSH-Verbindung wird mit dem Befehl folgendermaßen aufgebaut:
 \begin{lstlisting}
 ssh -p XXXX benutzer@serverAdresse
@@ -186,7 +186,7 @@ ssh -p XXXX benutzer@serverAdresse
 
 %%-------------------------------------------------------------------
 \subsection{DNS}
-Um das Raspberry Pi über das lokale Netzwerk erreichbar zu machen, wurde erstmal ein Webserver aufgebaut. Um jetzt das System überall über das Internet erreichbar zu sein, muss eine Domain reserviert werden. Somit kann ein Benutzer Zugriffe auf die Datenbank, sowie auf das Videostream aus jedem Rechner oder Android Mobilgerät weltweit ausüben. Der Dienst ``no ip'' bietet solche Dienstleistung kostenlos an. Für dieses Projekt wurde die Adresse \textit{spyhole.no-ip.biz} eingestellt und durch die Freigabe und Weiterleitung von Ports können die programmierten Applikationen auf das Raspberry Pi zugreifen.\\
+Um das Raspberry Pi über das lokale Netzwerk erreichbar zu sein, wurde erstmal ein Webserver aufgebaut. Um jetzt das System überall über das Internet erreichbar zu sein, muss eine Domain reserviert werden. Somit kann ein Benutzer Zugriffe auf die Datenbank, sowie auf das Videostream aus jedem Rechner oder Android Mobilgerät weltweit ausüben. Der Dienst ``no ip'' bietet solche Dienstleistung kostenlos an. Für dieses Projekt wurde die Adresse \textit{spyhole.no-ip.biz} eingestellt und durch die Freigabe und Weiterleitung von Ports können die programmierten Applikationen auf das Raspberry Pi zugreifen.\\
 
 Da dieses Projekt im eine privaten Haushalt verwendet wird, besitzt in der Regel der Benutzer keine feste IP Adresse. Deswegen muss die IP Adresse hinter des DNS zyklisch geprüft werden. Der Dienst ``no ip'' stellt ein Programm zur Verfügung, das sich um die Überprüfung der Gültigkeit der IP Adresse kümmert. Das Programm muss dann mit den Kommandos
 
@@ -266,7 +266,7 @@ CREATE TABLE IF NOT EXISTS `tb_images` (
   `ID` int(8) NOT NULL AUTO_INCREMENT,
   `dl_ID` int(8) NOT NULL,
   `U_ID` int(8) NOT NULL,
-  `imgdata` longblob,
+  `imgpath` varchar(255),
   `imgtype` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
@@ -300,7 +300,7 @@ Unter die vielen Möglichkeiten das OpenCV anbietet, ist für dieses Projekt die
 
 
 \subsection{Logarithmus traineren}
-Unter Logarithmus trainieren wird gemeint, der Gesichtserkennungsalgorithmus wird bekannt gemacht anhand vorhandenen Bilder, welche Personen identifiziert werden. Dafür müssen Bilder von den jeweiligen Personen im System gespeichert sein. Um eine höhere Übertragungsrate (nach Erfahrungen 13-17 FPS) zu erreichen, werden die Bilder der Kamera nur in Grautöne aufgenommen. Deswegen müssen die Trainingsbilder im gleichen Format vorliegen. Mittels eines C-Programmes werden die Gesichter geschnitten und in einen neuen Schwarz-Weiß Bild gespeichert.\\
+Unter Logarithmus trainieren wird gemeint, der Gesichtserkennungsalgorithmus wird bekannt gemacht anhand vorhandenen Bilder, welche Personen identifiziert werden. Dafür müssen Bilder von den jeweiligen Personen im System gespeichert sein. Um eine höhere Übertragungsrate (nach Erfahrungen 13-17 FPS) zu erreichen, werden die Bilder der Kamera nur in Grautöne aufgenommen. Deswegen müssen die Trainingsbilder im gleichen Format vorliegen. Mittels eines C-Programmes werden die Gesichter geschnitten und in ein neues Bild in Graustufen gespeichert.\\
 
 \begin{figure}[h]
   \begin{center}		%width=\linewidth
@@ -319,18 +319,17 @@ Mittels einer csv-Datei wird zu jeder Person eine Identifikationsnummer zugewies
 /home/pi/pictures/Person3.jpg;3
 \end{lstlisting}
 
-Leider ist uns nicht gelungen, ein stabiles System zu bauen, indem die Personenerkennung als sicheres Identifikationsmerkmal betrachtet werden kann. Es ist nötig, mehrere Merkmale auszuwerten und dafür stoßen wir an den Grenzen unseres Prozessors, obwohl dieser für Versuche übertaktet wurde.
+Leider ist uns nicht gelungen, ein stabiles System zu bauen, indem die Personenerkennung als sicheres Identifikationsmerkmal betrachtet werden kann. Es ist nötig, mehrere Merkmale auszuwerten und dafür stoßen wir an den Grenzen unseres Prozessors, obwohl dieser für die Versuche übertaktet wurde.
 
 
 %%-------------------------------------------------------------------
 \subsection{Kamera initialisieren}
-Videos sind die Wiedergabe von einer Bildersequenz, also werden einzelne Bilder bearbeitet und ausgewertet.  Zuerst wird die angeschlossene Kamera angesprochen und die Videoaufnahme gestartet. Dies folgt dem gleichen Prinzip wie eine Datei öffnen und aus dieser Datei zeilenweise auslesen. Jede gelesene Zeile wird gespeichert und von einem andere Algorithmus bearbeitet. Bei der Kamera werden einzelnen Bilder gespeichert und danach bearbeitet.\\
+Videos sind die Wiedergabe von einer Bildersequenz, also werden einzelne Bilder bearbeitet und ausgewertet.  Zuerst wird die angeschlossene Kamera angesprochen und die Videoaufnahme gestartet. Dies folgt dem gleichen Prinzip wie einer Datei öffnen und aus dieser Datei zeilenweise auslesen. Jede gelesene Zeile wird gespeichert und von einem andere Algorithmus bearbeitet. Bei der Kamera werden einzelnen Bilder gespeichert und danach bearbeitet.\\
  
 \subsection{Bild auswerten}
- Wenn ein Bild gespeichert worden ist, kann dieser ausgewertet werden. Als Erstes wird versucht, mittels OpenCV, ein Gesicht in das jeweilige Bild zu erkennen. Ist dieser Schritt erfolgreich, wird um das erkannte Gesicht ein Viereck gezeichnet. Danach versucht das Algorithmus anhand der mit der csv-Datei ausgewertete Bilder festzustellen, ob diese Person bekannt ist. Falls ja, wird anhand der Identifikationsnummer ein Name (im Programmcode fest kodiert) hinzugefügt (Siehe Abbildungen \ref{unknown} und \ref{marcus}). \\
+Wenn ein Bild gespeichert worden ist, kann dieser ausgewertet werden. Als Erstes wird versucht, mittels OpenCV, ein Gesicht in das jeweilige Bild zu erkennen. Ist dieser Schritt erfolgreich, wird um das erkannte Gesicht ein Viereck gezeichnet. Danach versucht das Algorithmus anhand der mit der csv-Datei ausgewertete Bilder festzustellen, ob diese Person bekannt ist. Falls ja, wird anhand der Identifikationsnummer ein Name (im Programmcode fest kodiert) hinzugefügt (Siehe Abbildungen \ref{unknown} und \ref{marcus}). \\
 
 
-%OK......
 \begin{figure}[h]
 \begin{minipage}[h]{5cm}
 	\centering
@@ -347,12 +346,12 @@ Videos sind die Wiedergabe von einer Bildersequenz, also werden einzelne Bilder 
 \end{minipage}
 \end{figure}
 
-Dieses bearbeitetes Bild wird für die Ausgabe über den Streamer gespeichert. Der Streamer liest das bereits ausgewertete Bild nach der Gesichtserkennung und stellt es als Stream zur Verfügung.
+Dieses bearbeitete Bild wird für die Ausgabe über den Streamer gespeichert. Der Streamer liest das bereits ausgewertete Bild nach der Gesichtserkennung und stellt es als Stream zur Verfügung.
  
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{MJPG Streamer}
-MJPG-Streamer bietet die Möglichkeit, Videodaten von einer Videoquelle als Motion-JPEG streamen zu lassen. Modernere Netzwerkkameras erzeugen Videostreams automatisch, während mit Hilfe von diesem Programm, auch einfache Webcams an einem Rechner mit Internet-Zugang Streams erzeugen können. MJPG Streamer gehört nicht zu den offiziellen Paketen von Linux und muss manuell kompiliert werden. Dafür sind folgende Pakete nötig:
+\section{MJPG Streamer} \label{mjpg}
+Der MJPG-Streamer bietet die Möglichkeit, Videodaten von einer Videoquelle als Motion-JPEG streamen zu lassen. Modernere Netzwerkkameras erzeugen Video-Streams automatisch, während mit Hilfe von diesem Programm, auch einfache Webcams an einem Rechner mit Internet-Zugang Streams erzeugen können. Der MJPG Streamer gehört nicht zu den offiziellen Paketen von Linux und muss manuell kompiliert werden. Dafür sind folgende Pakete nötig:
 
 \begin{itemize}
   \item build-essential
@@ -361,11 +360,11 @@ MJPG-Streamer bietet die Möglichkeit, Videodaten von einer Videoquelle als Moti
   \item subversion
 \end{itemize}
 
-Der aktuelle Quellcode muss von der Webseite \textit{http://sourceforge.net/projects/mjpg-streamer/} heruntergeladen werden und dementsprechend kompiliert werden.\cite{bib.mjpgStreamer} Über einem Webbrowser hat man Zugriff auf dem Stream. Der Stream basiert auf HTTP und TCP. In diesem Projekt lautet die Adresse für das Stream \textit{spyhole.no-ip:1900} (der Default Port 8080 wurde auf 1900 geändert). Hier wird eine Oberfläche mit verschiedenen Streamoptionen dargestellt. Unter anderem Java und Javascript, sowie die Möglichkeit das Stream mittels das Programm VLC zu sehen. Durch Personalisieren dieser Webseite haben unsere Desktop und Android App Zugriff auf dem Stream.\\
+Der aktuelle Quellcode muss von der Webseite \textit{http://sourceforge.net/projects/mjpg-streamer/} heruntergeladen werden und dementsprechend kompiliert werden.\cite{bib.mjpgStreamer} Über einem Webbrowser hat man Zugriff auf dem Stream. Der Stream basiert auf HTTP und TCP. In diesem Projekt lautet die Adresse für den Stream \textit{spyhole.no-ip:1900} (der Default Port 8080 wurde auf 1900 geändert). Hier wird eine Oberfläche mit verschiedenen Stream-Optionen dargestellt. Unter anderem Java und Javascript, sowie die Möglichkeit das Stream mittels das Programm VLC zu sehen. Durch Personalisieren dieser Webseite haben unsere Desktop und Android App Zugriff auf dem Stream.\\
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Socket}
+\section{Socket}\label{Socket}
 Damit die Clients (Android App und Desktop App) mit dem Server (Raspberry Pi) kommunizieren können, haben wir ein Socket \footnote{Software-Modul mit dessen sich ein Computerprogramm in einem Rechnernetz verbindet und mit anderen Computern Daten austauscht} programmiert. Wir haben uns für ein TCP Socket entschieden, da wir die Verbindungsorientierung und Ausfallsicherheit von TCP benötigen, um eine gewisse Sicherheit des System gewährleisten zu können. Ein weiterer Vorteil ist, dass Kommandos als lokaler Benutzer ausgeführt werden können. Das heißt, man vermeidet viele Probleme mit der Rechtevergabe von ausführbaren Dateien und Programme.\\
 
 Auf der Seite des Servers werden zwei Kommandos erwartet. Diese lauten "'Tür öffnen'' oder "'Stream starten''. In dem Fall, dass der Stream gestartet werden soll, wird hier ein Shell-Script aufgerufen, das die Kamera und die Gesichtserkennung aktiviert. Bei der Kamera wurde ein Timeout von einer Minute eingestellt, für den Fall, dass der Benutzer sich nicht abmeldet. Somit wird vermieden, dass die Kamera unnötigerweise aktiv ist.\\

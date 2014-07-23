@@ -67,7 +67,12 @@
 % \maketitle %Deckblatt
 \input{titlepage_julian.tex}
 
-\tableofcontents %Inhaltsverzeichnis
+\newpage
+\thispagestyle{empty}
+\mbox{}
+
+%Inhaltsverzeichnis
+\tableofcontents
 
 
 \pagenumbering{arabic}
@@ -82,7 +87,7 @@
 \listoffigures		%Abbildungsverzeichnis
 \lstlistoflistings	%Listingverzeichnis
 \begin{appendix}
-%  \input{anhang.tex}
+  \input{anhang.tex}
 \end{appendix}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Literaturverzeichnis

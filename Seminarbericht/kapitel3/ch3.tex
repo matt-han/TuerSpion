@@ -19,10 +19,19 @@
   morestring=[b]"
 }
 
-\chapter{Android App}
-\section{Android}
-Das Betriebssystem ist komplett in der Sprache Java programmiert worden. Dabei handelt es sich um ein Open Source Betriebssystem, welches von der Firma Google entwickelt worden ist. Kern des Betriebssystems ist ein angepasster Linux-Kernel 2.6. 
-\subsection{Struktur und Aufbau der App}
+\chapter{Clients}
+Im Rahmen des Projektes haben wir uns für eine Desktopanwendung und eine Mobile Applikation für Smartphones entschieden. Die Desktopanwendung wurde mit \textit{JavaFX} realisiert um die Anwendung auf möglichst viele Systeme zum Laufen zu bringen. Um den Programmieraufwand für die Entwicklung der Smartphone-Applikation gering zu halten, haben wir uns für Android entschieden. Da \textit{JavaFX} und Android Java basierend sind, können viele Klassen auf beiden Systemen verwendet werden, dies hat die Entwicklungszeit deutlich verringert.
+
+\subsubsection{JavaFX}
+JavaFX ist eine Java-Spezifikation, die als Hauptkonkurrenten Adobe Flash und Microsoft Silverlight hat. Ein positiver Punkt ist die Lauffähigkeit auf diversen Geräten wie z.B. Mobilfunk, Desktop-Computern, Embedded Geräten und Blu-ray Geräten. Die Programmierung wird normal in Java programmiert. Die dazugehörigen Bibliotheken werden seit der Java SE Runtime 7 Update 6 automatisch mit installiert. Es ist unter anderem auf die Grafikprogrammierung ausgelegt. Dadurch lassen sich grafische Elemente schnell programmieren und mit CSS gestalten\cite{bib.jFXRaspPi}.
+
+\subsubsection{Android}
+Das Betriebssystem ist komplett in der Sprache Java programmiert worden. Dabei handelt es sich um ein Open-Source Betriebssystem, welches von der Firma Google entwickelt worden ist. Kern des Betriebssystems ist ein angepasster Linux-Kernel 2.6. Das Framework Android-SDK bietet es dem Nutzer an die grafische Oberfläche von der eigentlich Logik zu trennen. Die grafischen Oberflächen werden als Views betitelt. Die Views werden mithilfe von XML gestaltet.
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Konzept}
 
 \begin{figure}[h]
   \begin{center}
@@ -31,132 +40,150 @@ Das Betriebssystem ist komplett in der Sprache Java programmiert worden. Dabei h
      \label{fig.Prozess}
   \end{center}
 \end{figure}
-Sobald die Control-View geladen ist verbindet sich das mobile Endgerät mit dem Raspberry Pi. Nachdem die Verbindung aufgebaut wurde, kann der Benutzer der App die Schaltfläche \texttt{Open} betätigen. Nach der erfolgreicher Verbindung zum Server sendet dieser einen kontinuierlichen Live-Stream an das Endgerät. Wenn der Benutzer nun die Schaltfläche \texttt{Open} betätigt, wird ein Befehl über die Socket-Schnittstelle zum Öffnen der Tür gesendet und ein GPIO angesteuert, der den Türöffner betätigt, um die Tür zu öffnen.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Struktur und Aufbau der Applikationen}
+
+Sobald die Control-View geladen ist verbindet sich das Client mit dem Raspberry Pi. Nachdem die Verbindung aufgebaut wurde, kann der Benutzer die Schaltflächen \texttt{Stream starten}, \texttt{Tür öffnen},\texttt{Bilder-Log} betätigen. Nach der erfolgreichen Verbindung zum Server sendet dieser einen kontinuierlichen Live-Stream an das Endgerät. Wenn der Benutzer nun die Schaltfläche \texttt{Tür öffnen} betätigt, wird ein Befehl über die Socket-Schnittstelle zum Öffnen der Tür gesendet und ein GPIO angesteuert, der den Türöffner betätigt, um die Tür zu öffnen. Auf das gleiche Prinzip baut auch \texttt{Stream starten} auf. \texttt{Bilder-Log} schick eine Anfrage an die Datenbank und erstellt eine Liste der Personen die die Tür geöffnet haben.
+
+
 \subsection{Anmelden des Users}
-Um zu verhindern, dass nicht jede Person auf den Stream zugreifen kann, sollte aus Sicherheitsaspekten ein Login implementiert werden. Die Login funktioniert genau wie bei JavaFX App, es besteht aus zwei Felder, ein Textfeld, und ein maskierten Passwordfeld sowie ein Login Button.
-Jedoch wird im Folgenden auf die Vorgehensweise eingegangen, welche Technologien verwendet worden sind und wie der Login- und Registrierungsprozess ablaufen soll beschrieben.
+Um zu verhindern, dass nicht jede Person auf dem Stream zugreifen kann, sollte aus Sicherheitsaspekten ein Login implementiert werden. Dieser besteht aus zwei Felder, ein Textfeld, und ein maskiertes Passwortfeld sowie ein Login-Button.
 
-\subsubsection{Registrierung}
+\subsection{Registrierung}
 \begin{figure}[h]
   \begin{center}
     \includegraphics[scale=0.3]{register.png}
-  		  \caption{Registrierung}
+  		  \caption{Konzept der Registrierung}
      \label{fig.Prozess}
   \end{center}
 \end{figure}
 
-Um sich überhaupt einloggen zu können muss sich der Benutzer beim aller ersten Mal  mit seinen Kontaktdaten registrieren. Dabei muss der Nutzer seine 
+Um sich einloggen zu können, muss sich der Benutzer beim allerersten Mal mit seinen Kontaktdaten registrieren. Dabei muss der Nutzer folgende Daten eingeben:
+
 \begin{itemize}
+	\item {Vorname}
+	\item {Nachname}
 	\item{E-Mail}
-	\item{Nutzername}
-	\item{Passwort}
+	\item{Benutzername}
+	\item{Passwort mit Überprüfung}
 \end{itemize}
-eingeben.
-Das Framework Android-SDK bietet es dem Nutzer an die grafische Oberfläche von der eigentlich Logik zu trennen. Die grafischen Oberflächen werden als Views betitelt. Die Views werden mithilfe von XML gestaltet.
-\begin{lstlisting}[caption={Android - Button erstellen},captionpos=b]
-<Button
-       android:id="@+id/btnLinkToLoginScreen"
-       android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
-       android:layout_marginTop="40dip"
-       android:background="@null"
-       android:text="Already registred. Log Me In!"
-       android:textColor="#21dbd4"
-       android:textStyle="bold" />
-\end{lstlisting}
-In dem obigen Codebeispiel wird ein Button in der View erzeugt. Dabei wird dieser mit einer sog. ID versehen, um den Button über diese ID aus dem Quellcode ansprechen zu können. Mithilfe von \texttt{android:layout\_width} und \texttt{android:layout\_height} wird die Höhe und Breite des Buttons beschrieben. Die Option \texttt{fill\_parent} lässt den Button über die ganze Breite des Bildschirmes anzeigen, abhängig von der Auflösung des Endgerätes. Die Option \texttt{wrap\_content} lässt den Button nur so groß werden, dass alle Inhalte gut zu erkennen sind.
-\\
-Parallel zu der grafischen Gestaltung der Activity \texttt{Register.xml} wird die eigentliche Logik in Java-Klassen ausgelagert, um eine strikte Trennung von GUI und Fachlogik zu erreichen. Die Klasse \texttt{SignUp.java} ist diesem Fall die Klasse die sich auf das XML-File \texttt{Register.xml} referenziert. Um die einzelnen Objekte des Layouts ansprechen zu können, werden im ersten Schritt alle einzelnen Komponenten erzeugt und im Nachhinein mit der Funktion \texttt{Objekt.findViewByID.ObjektID} auf das jeweilige gerade erzeugte Objekt in der Java-Klasse referenziert.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Code-Beispiel findVIew....
-\begin{lstlisting}[caption={Objekt Erzeugung und Referenzierung},captionpos=b]
-Button btnRegister;
-btnRegister = (Button) findViewById(R.id.btnRegister);
-\end{lstlisting}
-%%%%%%%%%%%%%
-Um überhaupt eine funktionierende Activity zu programmieren braucht man die Funktion \texttt{onCreat()}. In dieser Funktion wird all das ausgeführt was beim 
-Starten der Activity passieren soll. Zum einen das Referenzieren auf die erzeugten Objekte und weitere Funktionsaufrufe.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%Was passiert nun in der Klasse Code und Beschreibung
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Um den neuen Nutzer zu registrieren wurden einige Funktionen in die Klasse \texttt{UserFunctions.java} ausgegliedert. Diese Funktion beinhaltet verschiedene Funktionen, die anderen Klassen wieder verwendet werden um einen Nutzer zu registrieren, zu prüfen ob er schon eingeloggt ist oder um ihn auszuloggen.
-\begin{lstlisting}[caption={User Functions},captionpos=b]
-    public JSONObject loginUser(String name, String password);
-    public JSONObject registerUser(String name,  String password);
-    public boolean isUserLoggedIn(Context context);
-    public boolean logoutUser(Context context);
-\end{lstlisting}
-Die Funktion \texttt{registerUser(...)} bekommt zwei verschiedene String - Parameter um den neuen Nutzer in die Liste eintragen zu können. Zu einen den Name und zum anderen sein gewähltes Password.
-\begin{lstlisting}[caption={registerUser(...)},captionpos=b]
-// Building Parameters
 
-   List<NameValuePair> params = new ArrayList<NameValuePair>();
-   params.add(new BasicNameValuePair("tag", register_tag));
-   params.add(new BasicNameValuePair("name", name));
-   params.add(new BasicNameValuePair("password", password));
 
-   // getting JSON Object
-   JSONParser jsonParser = new JSONParser(registerURL, params,mContext);
-   try {
-         Thread.sleep(2000);
-   } catch (InterruptedException e) {
-         e.printStackTrace();
-   }
-   JSONObject json = jsonParser.getJSONFromUrl();
-   Log.i("JSON4", json.toString());
-   // return json
-   return json;
-\end{lstlisting}
-Es wird eine Liste \texttt{params} mit dem Typ \texttt{NameValuePair} erzeugt. Anschließend werden die Übergabeparameter in die Liste eingefügt mit der Methode \texttt{params.add()}, plus einem Tag \texttt{register\_tag}.Im Nachhinein wird das JSON-Objekt zusammen gefügt und am Ende der Funktion das fertig erzeugte JSON-Objekt mit allen Inhalten zurück gegeben.
-Das erzeugte JSON-Objekt wird per POST-Methode an den Server gesendet. Auf dem Server wird in der Index.php anhand des Tags erkannt, dass sich ein neuer Nutzer anmelden möchte dem entsprechend wird in einer Mehrfachauswahl (Switch-Case) ausgewertet und in einem weiteren PHP-Skript weiter bearbeitet. Schlussendlich werden die Daten in eine MySQL-Datenbank in die jeweiligen Spalten geschrieben. Das eingegebene Passwort wird  beim Eintragen in die Datenbank verschlüsselt, dass mögliche Hacker die das Password nicht auslesen können.
-\\
-Die weiteren Funktionen die in der Klasse enthalten sind, sprechen an für sich selbst und werden dem entsprechen nicht weiter erläutert.
-\\
-In der \texttt{SignUp.java} Klasse wird auf die response des Servers gewartet und bei einem erfolgreichen Registrieren wird der Nutzer der App weitergeleitet auf die Activity \texttt{OverView}.
+\subsection{Stream starten und Tür öffnen}
+Es wird über ein Socket eine Verbindung aufgebaut und Daten an dem Server (Raspberry Pi) gesendet, wie in Kapitel \ref{Socket} schon beschrieben wurde. Der Client erstellt dabei ein Socket-Objekt, mit die vereinbarte IP-Adresse und Port, und schickt die gewünschte Befehle.
+
+\subsection{Datenbankverbindung}
+Um Einträge der Datenbank darstellen, bearbeiten und erzeugen zu können, muss sich der Client mit der Datenbank des Servers verbinden. Nach der Voruntersuchung haben wir festgestellt, dass die Clients unterschiedlich vorgehen müssen. Anders als für die Desktopanwendung, gibt es für die Androidentwicklung keine Bibliothek die die direkte Verbindung zu einer MySQL Datenbank ermöglicht.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \newpage
-
- 
-\subsubsection{Login}
-\begin{figure}[h]
-  \begin{center}
-    \includegraphics[scale=0.3]{login.png}
-  		  \caption{Login}
-     \label{fig.Prozess}
-  \end{center}
-\end{figure}
-
-Beim Login verläuft der Vorgang wie bei der eben beschriebenen Registrierung, bloß in die andere Richtung. Dabei wird ein JSON-Objekt vom Server an das mobile Endgerät geschickt und in der App aufgeschlüsselt und interpretiert. Danach wird verglichen ob sich der Nutzer, der sich gerade einloggen möchte schon eingetragen ist, wenn ja wird er auf die nächste Activity weitergeleitet, ansonsten wird er zur Registrierung geführt und gebeten sich anzumelden.
-\subsection{Control View}
-\begin{figure}[h]
-  \begin{center}
-    \includegraphics[scale=0.3]{controlcenter.png}
-  		  \caption{Control View}
-     \label{fig.Prozess}
-  \end{center}
-\end{figure}
-Die Activity \texttt{ControlView} ist die Activity in der der Nutzer den Stream und die Öffnung der Tür vornehmen kann. Die Activity beinhaltet zwei Komponenten, zum einen die WebView in der der Stream mit der Gesichtserkennung dargestellt wird und zum anderen der \texttt{Open Button}, mit dem das Signal über die Socket-Schnittstelle zum Türöffnen gesendet wird.
-
-\begin{lstlisting}[caption={Aufbau der Verbindung und darstellen des Streams},captionpos=b]
-webView.getSettings().setJavaScriptEnabled(true);
-//webView.setAlwaysDrawnWithCacheEnabled(true);
-webView.setClickable(false);
-
-// load and show the website
-webView.loadUrl("http://spyhole.no-ip.biz/javascript_simple.html");
-
-\end{lstlisting}
-Sobald der Nutzer sich auf der Activity Control View befindet und der Button Stream starten betätigt ist, beginnt die App sich mit dem Server zu verbinden und baut die Verbindung auf. Dabei war zu beachten das wir Javascript aktivieren, da wir den Stream mithilfe von Javascript auf der Webseite darstellen. 
-
-\subsection{Datenbank}
-\begin{figure}[h]
-  \begin{center}
-    \includegraphics[scale=0.3]{database.png}
-  		  \caption{Datenbank}
-     \label{fig.Prozess}
-  \end{center}
-\end{figure}
-Diese Activity stellt alle Öffnungen der Tür da. Die dargestellten Daten sind die selben die auch in der JavaFX App benutzt werden, sie werden aus der MySQL Datenbank ausgelesen in der Tabelle dargestellt.
-Die Database Activity wird von \texttt{ListActivity} erweitert. \texttt{Database} beinhaltet zwei verschiedene Methoden zum einen die \texttt{getData()} und \texttt{fillList()}.  \texttt{getData()} stellt zuerst eine Verbindung zum MySQL- Server her und liest die Daten aus und speichert diese im Objekt \texttt{result} vom Typ ArrayList.\\
-In der Methode \texttt{fillList()} wird dieses Objekt wieder verwendet und anhand der ausgelesenen Daten in die Liste in der App eingetragen.
+%\begin{lstlisting}[caption={Android - Button erstellen},captionpos=b]
+%<Button
+%       android:id="@+id/btnLinkToLoginScreen"
+%       android:layout_width="fill_parent"
+%       android:layout_height="wrap_content"
+%       android:layout_marginTop="40dip"
+%       android:background="@null"
+%       android:text="Already registred. Log Me In!"
+%       android:textColor="#21dbd4"
+%       android:textStyle="bold" />
+%\end{lstlisting}
+%In dem obigen Codebeispiel wird ein Button in der View erzeugt. Dabei wird dieser mit einer sog. ID versehen, um den Button über diese ID aus dem Quellcode ansprechen zu können. Mithilfe von \texttt{android:layout\_width} und \texttt{android:layout\_height} wird die Höhe und Breite des Buttons beschrieben. Die Option \texttt{fill\_parent} lässt den Button über die ganze Breite des Bildschirmes anzeigen, abhängig von der Auflösung des Endgerätes. Die Option \texttt{wrap\_content} lässt den Button nur so groß werden, dass alle Inhalte gut zu erkennen sind.
+%\\
+%Parallel zu der grafischen Gestaltung der Activity \texttt{Register.xml} wird die eigentliche Logik in Java-Klassen ausgelagert, um eine strikte Trennung von GUI und Fachlogik zu erreichen. Die Klasse \texttt{SignUp.java} ist diesem Fall die Klasse die sich auf das XML-File \texttt{Register.xml} referenziert. Um die einzelnen Objekte des Layouts ansprechen zu können, werden im ersten Schritt alle einzelnen Komponenten erzeugt und im Nachhinein mit der Funktion \texttt{Objekt.findViewByID.ObjektID} auf das jeweilige gerade erzeugte Objekt in der Java-Klasse referenziert.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%Code-Beispiel findVIew....
+%\begin{lstlisting}[caption={Objekt Erzeugung und Referenzierung},captionpos=b]
+%Button btnRegister;
+%btnRegister = (Button) findViewById(R.id.btnRegister);
+%\end{lstlisting}
+%%%%%%%%%%%%%%
+%Um überhaupt eine funktionierende Activity zu programmieren braucht man die Funktion \texttt{onCreat()}. In dieser Funktion wird all das ausgeführt was beim 
+%Starten der Activity passieren soll. Zum einen das Referenzieren auf die erzeugten Objekte und weitere Funktionsaufrufe.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%Was passiert nun in der Klasse Code und Beschreibung
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Um den neuen Nutzer zu registrieren wurden einige Funktionen in die Klasse \texttt{UserFunctions.java} ausgegliedert. Diese Funktion beinhaltet verschiedene Funktionen, die anderen Klassen wieder verwendet werden um einen Nutzer zu registrieren, zu prüfen ob er schon eingeloggt ist oder um ihn auszuloggen.
+%
+%
+%Die Funktion \texttt{registerUser(...)} bekommt zwei verschiedene String - Parameter um den neuen Nutzer in die Liste eintragen zu können. Zu einen den Name und zum anderen sein gewähltes Password.
+%\begin{lstlisting}[caption={registerUser(...)},captionpos=b]
+%// Building Parameters
+%
+%   List<NameValuePair> params = new ArrayList<NameValuePair>();
+%   params.add(new BasicNameValuePair("tag", register_tag));
+%   params.add(new BasicNameValuePair("name", name));
+%   params.add(new BasicNameValuePair("password", password));
+%
+%   // getting JSON Object
+%   JSONParser jsonParser = new JSONParser(registerURL, params,mContext);
+%   try {
+%         Thread.sleep(2000);
+%   } catch (InterruptedException e) {
+%         e.printStackTrace();
+%   }
+%   JSONObject json = jsonParser.getJSONFromUrl();
+%   Log.i("JSON4", json.toString());
+%   // return json
+%   return json;
+%\end{lstlisting}
+%Es wird eine Liste \texttt{params} mit dem Typ \texttt{NameValuePair} erzeugt. Anschließend werden die Übergabeparameter in die Liste eingefügt mit der Methode \texttt{params.add()}, plus einem Tag \texttt{register\_tag}.Im Nachhinein wird das JSON-Objekt zusammen gefügt und am Ende der Funktion das fertig erzeugte JSON-Objekt mit allen Inhalten zurück gegeben.
+%Das erzeugte JSON-Objekt wird per POST-Methode an den Server gesendet. Auf dem Server wird in der Index.php anhand des Tags erkannt, dass sich ein neuer Nutzer anmelden möchte dem entsprechend wird in einer Mehrfachauswahl (Switch-Case) ausgewertet und in einem weiteren PHP-Skript weiter bearbeitet. Schlussendlich werden die Daten in eine MySQL-Datenbank in die jeweiligen Spalten geschrieben. Das eingegebene Passwort wird  beim Eintragen in die Datenbank verschlüsselt, dass mögliche Hacker die das Password nicht auslesen können.
+%\\
+%Die weiteren Funktionen die in der Klasse enthalten sind, sprechen an für sich selbst und werden dem entsprechen nicht weiter erläutert.
+%\\
+%In der \texttt{SignUp.java} Klasse wird auf die response des Servers gewartet und bei einem erfolgreichen Registrieren wird der Nutzer der App weitergeleitet auf die Activity \texttt{OverView}.
+%\newpage
+%
+% 
+%\subsubsection{Login}
+%\begin{figure}[h]
+%  \begin{center}
+%    \includegraphics[scale=0.3]{login.png}
+%  		  \caption{Login}
+%     \label{fig.Prozess}
+%  \end{center}
+%\end{figure}
+%
+%Beim Login verläuft der Vorgang wie bei der eben beschriebenen Registrierung, bloß in die andere Richtung. Dabei wird ein JSON-Objekt vom Server an das mobile Endgerät geschickt und in der App aufgeschlüsselt und interpretiert. Danach wird verglichen ob sich der Nutzer, der sich gerade einloggen möchte schon eingetragen ist, wenn ja wird er auf die nächste Activity weitergeleitet, ansonsten wird er zur Registrierung geführt und gebeten sich anzumelden.
+%\subsection{Control View}
+%\begin{figure}[h]
+%  \begin{center}
+%    \includegraphics[scale=0.3]{controlcenter.png}
+%  		  \caption{Control View}
+%     \label{fig.Prozess}
+%  \end{center}
+%\end{figure}
+%Die Activity \texttt{ControlView} ist die Activity in der der Nutzer den Stream und die Öffnung der Tür vornehmen kann. Die Activity beinhaltet zwei Komponenten, zum einen die WebView in der der Stream mit der Gesichtserkennung dargestellt wird und zum anderen der \texttt{Open Button}, mit dem das Signal über die Socket-Schnittstelle zum Türöffnen gesendet wird.
+%
+%\begin{lstlisting}[caption={Aufbau der Verbindung und darstellen des Streams},captionpos=b]
+%webView.getSettings().setJavaScriptEnabled(true);
+%//webView.setAlwaysDrawnWithCacheEnabled(true);
+%webView.setClickable(false);
+%
+%// load and show the website
+%webView.loadUrl("http://spyhole.no-ip.biz/javascript_simple.html");
+%
+%\end{lstlisting}
+%Sobald der Nutzer sich auf der Activity Control View befindet und der Button Stream starten betätigt ist, beginnt die App sich mit dem Server zu verbinden und baut die Verbindung auf. Dabei war zu beachten das wir Javascript aktivieren, da wir den Stream mithilfe von Javascript auf der Webseite darstellen. 
+%
+%\subsection{Datenbank}
+%\begin{figure}[h]
+%  \begin{center}
+%    \includegraphics[scale=0.3]{database.png}
+%  		  \caption{Datenbank}
+%     \label{fig.Prozess}
+%  \end{center}
+%\end{figure}
+%Diese Activity stellt alle Öffnungen der Tür da. Die dargestellten Daten sind die selben die auch in der JavaFX App benutzt werden, sie werden aus der MySQL Datenbank ausgelesen in der Tabelle dargestellt.
+%Die Database Activity wird von \texttt{ListActivity} erweitert. \texttt{Database} beinhaltet zwei verschiedene Methoden zum einen die \texttt{getData()} und \texttt{fillList()}.  \texttt{getData()} stellt zuerst eine Verbindung zum MySQL- Server her und liest die Daten aus und speichert diese im Objekt \texttt{result} vom Typ ArrayList.\\
+%In der Methode \texttt{fillList()} wird dieses Objekt wieder verwendet und anhand der ausgelesenen Daten in die Liste in der App eingetragen.
