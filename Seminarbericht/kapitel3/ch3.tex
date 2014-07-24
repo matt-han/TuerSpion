@@ -20,13 +20,13 @@
 }
 
 \chapter{Clients}
-Im Rahmen des Projektes haben wir uns für eine Desktopanwendung und eine Mobile Applikation für Smartphones entschieden. Die Desktopanwendung wurde mit \textit{JavaFX} realisiert um die Anwendung auf möglichst viele Systeme zum Laufen zu bringen. Um den Programmieraufwand für die Entwicklung der Smartphone-Applikation gering zu halten, haben wir uns für Android entschieden. Da \textit{JavaFX} und Android Java basierend sind, können viele Klassen auf beiden Systemen verwendet werden, dies hat die Entwicklungszeit deutlich verringert.
+Im Rahmen des Projektes haben wir uns für eine Desktop-Anwendung und eine Applikation für Smartphones entschieden. Die Desktop-Anwendung wurde mit \textit{JavaFX} realisiert, um die Anwendung auf möglichst viele Systeme zum Laufen zu bringen. Um den Programmieraufwand für die Entwicklung der Smartphone-Applikation gering zu halten, haben wir uns für Android entschieden. Da \textit{JavaFX} und Android auf Java-basiert sind, können viele Klassen auf beiden Systemen verwendet werden, dies hat die Entwicklungszeit deutlich verringert.
 
 \subsubsection{JavaFX}
 JavaFX ist eine Java-Spezifikation, die als Hauptkonkurrenten Adobe Flash und Microsoft Silverlight hat. Ein positiver Punkt ist die Lauffähigkeit auf diversen Geräten wie z.B. Mobilfunk, Desktop-Computern, Embedded Geräten und Blu-ray Geräten. Die Programmierung wird normal in Java programmiert. Die dazugehörigen Bibliotheken werden seit der Java SE Runtime 7 Update 6 automatisch mit installiert. Es ist unter anderem auf die Grafikprogrammierung ausgelegt. Dadurch lassen sich grafische Elemente schnell programmieren und mit CSS gestalten\cite{bib.jFXRaspPi}.
 
 \subsubsection{Android}
-Das Betriebssystem ist komplett in der Sprache Java programmiert worden. Dabei handelt es sich um ein Open-Source Betriebssystem, welches von der Firma Google entwickelt worden ist. Kern des Betriebssystems ist ein angepasster Linux-Kernel 2.6. Das Framework Android-SDK bietet es dem Nutzer an die grafische Oberfläche von der eigentlich Logik zu trennen. Die grafischen Oberflächen werden als Views betitelt. Die Views werden mithilfe von XML gestaltet.
+Das Betriebssystem ist komplett in der Sprache Java programmiert worden. Dabei handelt es sich um ein Open-Source Betriebssystem, welches von der Firma Google entwickelt worden ist. Der Kern des Betriebssystems ist ein angepasster Linux-Kernel 2.6. Das Framework Android-SDK bietet es dem Nutzer an die grafische Oberfläche von der eigentlich Logik zu trennen. Die grafischen Oberflächen werden als Views betitelt. Die Views werden mithilfe von XML gestaltet.
 \newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -43,7 +43,7 @@ Das Betriebssystem ist komplett in der Sprache Java programmiert worden. Dabei h
 
 \subsection{Struktur und Aufbau der Applikationen}
 
-Sobald die Control-View geladen ist verbindet sich das Client mit dem Raspberry Pi. Nachdem die Verbindung aufgebaut wurde, kann der Benutzer die Schaltflächen \texttt{Stream starten}, \texttt{Tür öffnen},\texttt{Bilder-Log} betätigen. Nach der erfolgreichen Verbindung zum Server sendet dieser einen kontinuierlichen Live-Stream an das Endgerät. Wenn der Benutzer nun die Schaltfläche \texttt{Tür öffnen} betätigt, wird ein Befehl über die Socket-Schnittstelle zum Öffnen der Tür gesendet und ein GPIO angesteuert, der den Türöffner betätigt, um die Tür zu öffnen. Auf das gleiche Prinzip baut auch \texttt{Stream starten} auf. \texttt{Bilder-Log} schick eine Anfrage an die Datenbank und erstellt eine Liste der Personen die die Tür geöffnet haben.
+Sobald die Control-View geladen ist, verbindet sich das Client mit dem Raspberry Pi. Nachdem die Verbindung aufgebaut wurde, kann der Benutzer die Schaltflächen \texttt{Stream starten}, \texttt{Tür öffnen},\texttt{Bilder-Log} betätigen. Nach der erfolgreichen Verbindung zum Server sendet dieser einen kontinuierlichen Live-Stream an das Endgerät. Wenn der Benutzer nun die Schaltfläche \texttt{Tür öffnen} betätigt, wird ein Befehl über die Socket-Schnittstelle zum Öffnen der Tür gesendet und ein GPIO angesteuert, der den Türöffner betätigt, um die Tür zu öffnen. Auf das gleiche Prinzip baut auch \texttt{Stream starten} auf. Die Schaltfläche \texttt{Bilder-Log} schickt eine Anfrage an die Datenbank und erstellt eine Liste der Personen,  die die Tür geöffnet haben.
 
 
 \subsection{Anmelden des Users}
@@ -73,7 +73,7 @@ Um sich einloggen zu können, muss sich der Benutzer beim allerersten Mal mit se
 Es wird über ein Socket eine Verbindung aufgebaut und Daten an dem Server (Raspberry Pi) gesendet, wie in Kapitel \ref{Socket} schon beschrieben wurde. Der Client erstellt dabei ein Socket-Objekt, mit die vereinbarte IP-Adresse und Port, und schickt die gewünschte Befehle.
 
 \subsection{Datenbankverbindung}
-Um Einträge der Datenbank darstellen, bearbeiten und erzeugen zu können, muss sich der Client mit der Datenbank des Servers verbinden. Nach der Voruntersuchung haben wir festgestellt, dass die Clients unterschiedlich vorgehen müssen. Anders als für die Desktopanwendung, gibt es für die Androidentwicklung keine Bibliothek die die direkte Verbindung zu einer MySQL Datenbank ermöglicht.
+Um Einträge der Datenbank darstellen, bearbeiten und erzeugen zu können, muss sich der Client mit der Datenbank des Servers verbinden. Nach der Voruntersuchung haben wir festgestellt, dass die Clients unterschiedlich vorgehen müssen. Anders als für die Desktop-Anwendung, gibt es für die Entwicklung des Systems Android keine Bibliothek, die die direkte Verbindung zu einer MySQL Datenbank ermöglicht.
 
 
 

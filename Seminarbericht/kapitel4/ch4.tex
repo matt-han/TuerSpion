@@ -20,12 +20,12 @@
 				
 				
 \chapter{Technische Umsetzung}
-Im Folgenden wird auf die Vorgehensweise eingegangen, welche Technologien verwendet worden sind und wie der Login- und Registrierungsprozess ablaufen soll, sowie die Unterschiede zwischen der Desktopanwendung und der Android-Applikation.
+Im Folgenden wird auf die Vorgehensweise eingegangen, welche Technologien verwendet worden sind und wie der Login- und Registrierungsprozess ablaufen soll, sowie die Unterschiede zwischen der Desktop-Anwendung und der Android-Applikation.
 
 
 
 \section{Struktur und Aufbau der App}
-Es gibt insgesamt vier verschiedene View's in der App.
+Es gibt insgesamt vier verschiedene View's in der Applikation.
 \begin{itemize}
 	\item Login
 	\item Registrierung
@@ -36,7 +36,7 @@ Es gibt insgesamt vier verschiedene View's in der App.
 Im Anhang \ref{A.android} und \ref{A.desktop} befinden sich Screenshots der Applikationen.\\
 
 \subsection{Login}
-Bei der Login-View kann sich der Nutzer mit seinem Benutzernamen und Passwort, was in der Datenbank hinterlegt ist, anmelden und somit zur Control-View gelangen. Ist einer der Felder nicht ausgefüllt oder das Passwort bzw. der User nicht korrekt, wird das mit einer Nachricht dargestellt und der Nutzer kann es erneut versuchen. Das Passwort-Feld ist immer maskiert. Von der Login-View ist es auch möglich, zur Registrierung-View zu wechseln.\\
+Bei der Login-View kann sich der Nutzer mit seinem Benutzernamen und Passwort, was in der Datenbank hinterlegt ist, anmelden und somit zur Control-View gelangen. Ist einer der Felder nicht ausgefüllt oder das Passwort bzw. der User nicht korrekt, wird das mit einer Fehlermeldung dargestellt und der Nutzer kann es erneut versuchen. Das Passwort-Feld ist immer maskiert. Von der Login-View ist es auch möglich, zur Registrierung-View zu wechseln.\\
 
 
 \begin{figure}[h]
@@ -49,14 +49,14 @@ Bei der Login-View kann sich der Nutzer mit seinem Benutzernamen und Passwort, w
 
 
 \subsection{Registrierung}
-Falls der Benutzer noch kein Account in der Datenbanktabelle \texttt{tb\_users} hat, hat er die Möglichkeit, sich über die Registrierung-View zu registrieren. Software-seitig wurde eine Überprüfung eingebaut, dass jedes Textfeld etwas beinhalten muss (Pflichtfelder). Die Passwörter werden auf Konsistenz überprüft. Wenn alle Überprüfungen korrekt sind, wird aus den Eingaben ein String gebaut und an die Datenbank geschickt. Falls die Überprüfung fehlgeschlagen ist, wird wie bei der Login-View eine Nachricht ausgegeben. An dieser Stelle wird auch überprüft, ob der Username schon in der Datenbanktabelle \texttt{tb\_users} existiert. Somit wird Doppeleinträge in der Datenbanktabelle verhindert.\\
+Falls der Benutzer noch kein Account in der Datenbanktabelle \texttt{tb\_users} hat, hat er die Möglichkeit, sich über die Registrierung-View zu registrieren. Software-seitig wurde eine Überprüfung eingebaut, dass jedes Textfeld etwas beinhalten muss (Pflichtfelder). Die Passwörter werden auf Konsistenz überprüft. Wenn alle Überprüfungen korrekt sind, wird aus den Eingaben ein String gebaut und an die Datenbank geschickt. Falls die Überprüfung fehlgeschlagen ist, wird wie bei der Login-View eine Fehlermeldung ausgegeben. An dieser Stelle wird auch überprüft, ob der Benutzername schon in der Datenbanktabelle \texttt{tb\_users} existiert. Somit wird Doppeleinträge in der Datenbanktabelle verhindert.\\
 
 \subsection{Datenbankverbindung}
-Bei der Datenbankverbindung ist zu beachten, dass die Desktopanwendung sich direkt mit dem MySQL Server verbinden kann, die Android Applikation allerdings nicht, weil die entsprechenden MySQL Bibliotheken für Android zu diesem Zeitpunkt nicht existieren. Die Verbindung findet über ein \texttt{JSON} Objekt statt. Server-seitig existiert ein \texttt{PHP}-Skript welches dass Objekt abfängt und die Verbindung zur Datenbank herstellt.\\
+Bei der Datenbankverbindung ist zu beachten, dass die Desktop-Anwendung sich direkt mit dem MySQL-Server verbinden kann, die Android Applikation allerdings nicht, weil die entsprechenden MySQL-Bibliotheken für Android zu diesem Zeitpunkt nicht existieren. Die Verbindung findet über \texttt{JSON} statt. Server-seitig existiert ein \texttt{PHP}-Skript, welches das JSON-Objekt abfängt und die Verbindung zur Datenbank herstellt.\\
 
 \subsubsection{JSON}
 
-Es wird eine Liste \texttt{params} mit dem Typ \texttt{NameValuePair} erzeugt. Anschließend werden die Übergabeparameter in die Liste eingefügt mit der Methode \texttt{params.add()}, zusätzlich mit einem Tag \texttt{register\_tag}. Im Nachhinein wird das JSON-Objekt zusammen gefügt und am Ende der Funktion das fertig erzeugte JSON-Objekt mit allen Inhalten zurück gegeben. Das erzeugte JSON-Objekt wird per POST-Methode an den Server gesendet. Auf dem Server wird in der \textit{insert.php} anhand des Tags erkannt, dass sich ein neuer Nutzer registrieren möchte. Das PHP-Skript baut eine Verbindung zur MySQL-Datenbank auf und sendet die Daten als SQL-Syntax dorthin und trägt diese in die jeweiligen Spalten ein. Im Login-View ist der Vorgang gleich, nur wird auf dem Server diesmal die \textit{login.php} angesprochen.\\
+Es wird eine Liste \texttt{params} mit dem Typ \texttt{NameValuePair} erzeugt. Anschließend werden die Übergabeparameter in die Liste eingefügt mit der Methode \texttt{params.add()}, zusätzlich mit einem Tag \texttt{register\_tag}. Im Nachhinein wird das JSON-Objekt zusammengefügt und am Ende der Funktion das fertig erzeugte JSON-Objekt mit allen Inhalten zurückgegeben. Das erzeugte JSON-Objekt wird per POST-Methode an den Server gesendet. Auf dem Server wird in der \textit{insert.php} anhand des Tags erkannt, dass sich ein neuer Nutzer registrieren möchte. Das PHP-Skript baut eine Verbindung zur MySQL-Datenbank auf und sendet die Daten als SQL-Syntax dorthin und trägt diese in die jeweiligen Spalten ein. In der Login-View ist der Vorgang gleich, nur wird auf dem Server diesmal die \textit{login.php} angesprochen.\\
 
 \begin{lstlisting}[caption={User Functions},captionpos=b]
     public JSONObject loginUser(String name, String password);
@@ -86,7 +86,7 @@ Es wird eine Liste \texttt{params} mit dem Typ \texttt{NameValuePair} erzeugt. A
 
 
 \subsubsection{MySQL}
-Bei der Desktopanwendung existiert eine Klasse namens \texttt{DBConnector.Java} die für die Verbindung zur Datenbank zuständig ist. Dank dieser Klasse und der direkten Verbindung kann die Anwendung  SQL Befehle direkt an den Server schicken. Um ein Eintrag zu erstellen, bereitet die Applikation ein String vor, mit der SQL-Syntax und die Parameter die eingetragen werden sollen. Der folgende Code zeigt die Darstellung, wie ein String mit Nutzerdaten aussieht und an die Datenbank gesendet wird.
+Bei der Desktop-Anwendung existiert eine Klasse namens \texttt{DBConnector.java}, die für die Verbindung zur Datenbank zuständig ist. Dank dieser Klasse und der direkten Verbindung kann die Anwendung SQL Befehle direkt an den Server schicken. Um ein Eintrag zu erstellen, bereitet die Applikation ein String vor, mit der SQL-Syntax und die Parameter die eingetragen werden sollen. Der folgende Code zeigt die Darstellung, wie ein String mit Nutzerdaten aussieht und an die Datenbank gesendet wird.
 
 
 \begin{lstlisting}[caption={String neuer Benutzer}\label{lst:reg.java.eintrag},captionpos=b]
@@ -100,14 +100,15 @@ Bei der Desktopanwendung existiert eine Klasse namens \texttt{DBConnector.Java} 
 
 \begin{lstlisting}[caption={SQL Benutzer eintragen}
 ,captionpos=b]
-	INSERT INTO tb_user VALUES (null,'Heinz', 'Müller', 'heinz.mueller@gmail.com',
-			 'H.Mueller', '007', NOW())
+	INSERT INTO tb_user VALUES (null,'Heinz', 'Müller', 'heinz.mueller@gmail.com', 'H.Mueller', '007', NOW())
 \end{lstlisting}
 
 Der Befehl \texttt{NOW()} wird in der Datenbank mit dem aktuellen Datum und Uhrzeit gesetzt.\\
 
 \subsection{Control}
 In der View \texttt{Control} ist es möglich, das Live-Video von der Kamera zu betrachten. Es wird mit Hilfe der Klasse \textit{WebEngine} und \textit{WebView} realisiert. D.h. es wird durch \textit{WebEngine} die Webseite geladen und durch \textit{WebView} wird die geladene Webseite in der View angezeigt. Diese Webseite wird vom \textit{MJPG Streamer} (siehe Kapitel \ref{mjpg}) zur Verfügung gestellt. Der Stream wird erst gestartet, wenn der Button \texttt{Stream starten} getätigt ist.
+
+\newpage
 
 \begin{lstlisting}[caption={Stream Einbindung},captionpos=b]
 WebView webview = new WebView();
@@ -118,7 +119,7 @@ File file = new File("http://<IP-Adresse vom PI>/javascript\_simple.html");
 webengine.load(file.toString());
 \end{lstlisting}
 
-Beim Betätigen des Buttons \textit{Benutzertabelle} wird eine neue View geöffnet (siehe Kapital \ref{bilderLog}) und die View \texttt{Control} wird geschlossen. Nach dem Betätigen des Buttons \texttt{Tür öffnen} werden zwei Funktionen aufgerufen. Bei der ersten Funktion wird über die Socket-Schnittstelle ein Befehl an das Pi gesendet, das dieses die Tür öffnen soll. Bei der zweiten Funktion wird ein neuer Eintrag in die Tabelle \texttt{tb\_doorloogers} in Datenbank eingetragen. Dieser Eintrag beinhaltet den Zeitpunkt des Öffnens der Tür, sowie der Benutzer. Der Server erstellt ein zweiten Eintrag, das bereits in Kapitel \ref{Socket} erläutert wurde.\\
+Beim Betätigen des Buttons \textit{Bilderlog} wird eine neue View geöffnet (siehe Kapital \ref{bilderLog}) und die View \texttt{Control} wird geschlossen. Nach dem Betätigen des Buttons \texttt{Tür öffnen} werden zwei Funktionen aufgerufen. Bei der ersten Funktion wird über die Socket-Schnittstelle ein Befehl an das Pi gesendet, das dieses die Tür öffnen soll. Bei der zweiten Funktion wird ein neuer Eintrag in die Tabelle \texttt{tb\_doorloogers} in Datenbank eingetragen. Dieser Eintrag beinhaltet den Zeitpunkt des Öffnens der Tür, sowie der Benutzer. Der Server erstellt ein zweiter Eintrag, das bereits in Kapitel \ref{Socket} erläutert wurde.\\
 
 
 \subsection{Bilder Log}\label{bilderLog}
